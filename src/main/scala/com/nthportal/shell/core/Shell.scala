@@ -4,11 +4,17 @@ import java.util.Objects
 
 import com.google.common.base.CharMatcher
 import com.nthportal.shell.core.builtin.HelpCommand
-import com.nthportal.shell.util.CommandTabCompleter
+import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
 
-class Shell private(commandsSeq: Seq[Command]) extends CommandTabCompleter {
+class Shell private(commandsSeq: Seq[Command]) extends CommandTabCompleter
+                                                                with CommandExecutor {
   val commands: Seq[Command] = HelpCommand(commandsSeq) +: commandsSeq
 
+  override protected def noArgExecution: Option[String] = None
+
+  override protected def noSuchCommandExecution(command: String, args: Seq[String]): Option[String] = {
+    Some("Command not found: " + command)
+  }
 }
 
 object Shell {

@@ -1,12 +1,8 @@
 package com.nthportal.shell.util
 
-import com.nthportal.shell.core.{Command, TabCompletable}
+import com.nthportal.shell.core.TabCompletable
 
-trait CommandTabCompleter extends TabCompletable {
-  protected final val commandsByName: Map[String, Command] = commands.toStream.map(c => c.name -> c).toMap
-
-  protected def commands: Seq[Command]
-
+trait CommandTabCompleter extends CommandDelegator with TabCompletable {
   override final def tabComplete(args: Seq[String]): Seq[String] = args match {
     case Seq.empty => Seq.empty
     case Seq(prefix) =>
