@@ -1,8 +1,6 @@
 package com.nthportal.shell.core
 
-trait SubCommand extends TabCompletable {
-  def execute(args: Seq[String]): Option[String]
-
+trait SubCommand extends Executable with TabCompletable {
   def description: Option[String] = None
 
   def help(args: Seq[String]): Option[String] = None
