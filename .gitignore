@@ -14,3 +14,4 @@ project/project
 !.gitignore
 !LICENSE
 !*.md
+!.travis.yml
