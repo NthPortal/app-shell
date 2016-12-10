@@ -1,5 +1,6 @@
-package com.nthportal.shell.core
+package com.nthportal.shell
+package core
 
 trait Executable {
-  def execute(args: Seq[String]): Option[String]
+  def execute(args: ImmutableSeq[String]): Option[String]
 }

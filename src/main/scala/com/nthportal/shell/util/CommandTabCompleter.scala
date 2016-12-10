@@ -1,10 +1,11 @@
-package com.nthportal.shell.util
+package com.nthportal.shell
+package util
 
 import com.nthportal.shell.core.TabCompletable
 
 trait CommandTabCompleter extends CommandDelegator with TabCompletable {
-  override final def tabComplete(args: Seq[String]): Seq[String] = args match {
-    case Seq.empty => Seq.empty
+  override final def tabComplete(args: ImmutableSeq[String]): ImmutableSeq[String] = args match {
+    case Seq.empty => Nil
     case Seq(prefix) =>
       commands
         .toStream
@@ -13,6 +14,6 @@ trait CommandTabCompleter extends CommandDelegator with TabCompletable {
     case command +: tail =>
       commandsByName.get(command)
         .map(_.tabComplete(tail))
-        .getOrElse(Seq.empty)
+        .getOrElse(Nil)
   }
 }

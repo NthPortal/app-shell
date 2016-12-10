@@ -1,25 +1,27 @@
-package com.nthportal.shell.core
+package com.nthportal.shell
+package core
 package builtin
 
 import com.nthportal.shell.util.CommandTabCompleter
 
-private[core] case class HelpCommand(shellCommands: Seq[Command]) extends Command with CommandTabCompleter {
+private[core] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
+                                                                                   with CommandTabCompleter {
   override protected val commands = this +: shellCommands.sortBy(_.name)
 
   override val name: String = Shell.helpCommandName
 
-  override def execute(args: Seq[String]): Option[String] = help(args)
+  override def execute(args: ImmutableSeq[String]): Option[String] = help(args)
 
   override def description: Option[String] = Some("Shows the help information for a command")
 
-  override def help(args: Seq[String]): Option[String] = Some(getHelp(args))
+  override def help(args: ImmutableSeq[String]): Option[String] = Some(getHelp(args))
 
-  private def getHelp(args: Seq[String]): String = {
+  private def getHelp(args: ImmutableSeq[String]): String = {
     if (args.isEmpty) helpMessage
     else getHelpForCommand(args.head, args.tail)
   }
 
-  private def getHelpForCommand(command: String, args: Seq[String]): String = {
+  private def getHelpForCommand(command: String, args: ImmutableSeq[String]): String = {
     if (command == name) descriptionForCommand(this)
     else {
       commandsByName.get(command)
@@ -39,5 +41,5 @@ private[core] case class HelpCommand(shellCommands: Seq[Command]) extends Comman
 
   private def helpMessage: String = commands.map(descriptionForCommand).mkString("\n")
 
-  private def noHelp(args: Seq[String]): String = "No help for: " + args.mkString(" ")
+  private def noHelp(args: ImmutableSeq[String]): String = "No help for: " + args.mkString(" ")
 }

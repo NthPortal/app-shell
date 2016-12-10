@@ -1,5 +1,6 @@
-package com.nthportal.shell.core
+package com.nthportal.shell
+package core
 
 trait TabCompletable {
-  def tabComplete(args: Seq[String]): Seq[String]
+  def tabComplete(args: ImmutableSeq[String]): ImmutableSeq[String]
 }

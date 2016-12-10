@@ -1,10 +1,13 @@
-package com.nthportal.shell.util
+package com.nthportal.shell
+package util
 
 import com.nthportal.shell.core.Command
 
+import scala.collection.immutable
+
 trait CommandDelegator {
-  protected final val commandsByName: Map[String, Command] =
+  protected final val commandsByName: immutable.Map[String, Command] =
     commands.toStream.map(c => c.name -> c).toMap
 
-  protected def commands: Seq[Command]
+  protected def commands: ImmutableSeq[Command]
 }

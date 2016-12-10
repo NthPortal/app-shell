@@ -1,4 +1,5 @@
-package com.nthportal.shell.core
+package com.nthportal.shell
+package core
 
 import java.util.Objects
 
@@ -6,26 +7,26 @@ import com.google.common.base.CharMatcher
 import com.nthportal.shell.core.builtin.HelpCommand
 import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
 
-class Shell private(commandsSeq: Seq[Command]) extends CommandTabCompleter
+class Shell private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter
                                                                 with CommandExecutor {
-  val commands: Seq[Command] = HelpCommand(commandsSeq) +: commandsSeq
+  val commands: ImmutableSeq[Command] = HelpCommand(commandsSeq) +: commandsSeq
 
   override protected def noArgExecution: Option[String] = None
 
-  override protected def noSuchCommandExecution(command: String, args: Seq[String]): Option[String] = {
+  override protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String]): Option[String] = {
     Some("Command not found: " + command)
   }
 }
 
 object Shell {
-  def apply(commands: Seq[Command]): Shell = {
+  def apply(commands: ImmutableSeq[Command]): Shell = {
     validateCommands(commands)
     new Shell(commands)
   }
 
   @throws[IllegalArgumentException]
   @throws[NullPointerException]
-  def validateCommands(commands: Seq[Command]): Unit = {
+  def validateCommands(commands: ImmutableSeq[Command]): Unit = {
     // Check for null commands
     commands.foreach(Objects.requireNonNull)
 
