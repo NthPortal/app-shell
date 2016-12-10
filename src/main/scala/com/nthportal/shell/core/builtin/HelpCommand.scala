@@ -31,15 +31,15 @@ private[core] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exten
           case "" => noHelp(args)
           case s => s
         }
-        .getOrElse("No such command: " + command)
+        .getOrElse(s"No such command: $command")
     }
   }
 
   private def descriptionForCommand(command: Command): String = {
-    command.name + " - \t" + command.description.getOrElse("No description provided")
+     s"${command.name} - \t${command.description.getOrElse("No description provided")}"
   }
 
   private def helpMessage: String = commands.map(descriptionForCommand).mkString("\n")
 
-  private def noHelp(args: ImmutableSeq[String]): String = "No help for: " + args.mkString(" ")
+  private def noHelp(args: ImmutableSeq[String]): String = s"No help for: ${args.mkString(" ")}"
 }

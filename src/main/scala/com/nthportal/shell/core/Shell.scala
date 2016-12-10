@@ -14,7 +14,7 @@ class Shell private(commandsSeq: ImmutableSeq[Command]) extends CommandTabComple
   override protected def noArgExecution: Option[String] = None
 
   override protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String]): Option[String] = {
-    Some("Command not found: " + command)
+    Some(s"Command not found: $command")
   }
 }
 
@@ -34,7 +34,7 @@ object Shell {
 
     // Check for reserved help command name
     if (names.contains(helpCommandName)) {
-      throw new IllegalArgumentException("'" + helpCommandName + "' is a reserved command name")
+      throw new IllegalArgumentException(s"'$helpCommandName' is a reserved command name")
     }
 
     // Check for whitespace in commands
@@ -50,7 +50,7 @@ object Shell {
       }
       .filter(_._2 > 1)
     if (duplicates.nonEmpty) {
-      throw new IllegalArgumentException("Duplicated command names: " + duplicates.mkString(", "))
+      throw new IllegalArgumentException(s"Duplicated command name(s): ${duplicates.mkString(", ")}")
     }
   }
 
