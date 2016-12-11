@@ -9,10 +9,11 @@ trait CommandExecutor extends CommandDelegator with Executable {
   protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String]): Option[String]
 
   override final def execute(args: ImmutableSeq[String]): Option[String] = args match {
-    case Seq.empty => noArgExecution
-    case command +: tail =>
-      commandsByName.get(command)
-        .map(_.execute(tail))
-        .getOrElse(noSuchCommandExecution(command, tail))
+    case Seq() => noArgExecution
+    case name +: subArgs =>
+      commandsByName.get(name) match {
+        case Some(command) => command.execute(subArgs)
+        case None => noSuchCommandExecution(name, subArgs)
+      }
   }
 }
