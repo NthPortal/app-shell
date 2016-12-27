@@ -1,14 +1,15 @@
 package com.nthportal.shell
 package util
 
-import com.nthportal.shell.core.Executable
+import com.nthportal.shell.core.{Executable, OutputSink}
 
 trait CommandExecutor extends CommandDelegator with Executable {
-  protected def noArgExecution: Option[String]
+  protected def noArgExecution(implicit sink: OutputSink): Unit
 
-  protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String]): Option[String]
+  protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String])
+                                      (implicit sink: OutputSink): Unit
 
-  override final def execute(args: ImmutableSeq[String]): Option[String] = args match {
+  override final def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = args match {
     case Seq() => noArgExecution
     case name +: subArgs =>
       commandsByName.get(name) match {

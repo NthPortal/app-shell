@@ -1,5 +1,3 @@
 package com.nthportal.shell.core
 
-trait OutputProvider {
-
-}
+trait OutputProvider extends OutputSink

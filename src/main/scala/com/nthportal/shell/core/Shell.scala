@@ -1,58 +1,36 @@
-package com.nthportal.shell
-package core
+package com.nthportal.shell.core
 
-import java.util.Objects
+import com.nthportal.shell.ImmutableSeq
 
-import com.google.common.base.CharMatcher
-import com.nthportal.shell.core.builtin.HelpCommand
-import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
+import scala.concurrent.ExecutionContext
 
-class Shell private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter
-                                                                with CommandExecutor {
-  val commands: ImmutableSeq[Command] = HelpCommand(commandsSeq) +: commandsSeq
+sealed trait Shell {
+  def commands: ImmutableSeq[Command]
 
-  override protected def noArgExecution: Option[String] = None
+  def lineParser: LineParser
 
-  override protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String]): Option[String] = {
-    Some(s"Command not found: $command")
-  }
+  def tabComplete(line: String): ImmutableSeq[String]
+
+  def executeLine(line: String): Unit
 }
 
 object Shell {
-  def apply(commands: ImmutableSeq[Command]): Shell = {
-    validateCommands(commands)
-    new Shell(commands)
+  def apply(lineParser: LineParser,
+            commands: ImmutableSeq[Command],
+            outputProvider: OutputProvider)
+           (implicit ec: ExecutionContext): Shell = {
+    Impl(ShellCore(commands), lineParser, outputProvider)
   }
 
-  @throws[IllegalArgumentException]
-  @throws[NullPointerException]
-  def validateCommands(commands: ImmutableSeq[Command]): Unit = {
-    // Check for null commands
-    commands.foreach(Objects.requireNonNull)
+  private case class Impl(core: ShellCore,
+                          lineParser: LineParser,
+                          outputProvider: OutputProvider) extends Shell {
+    implicit private def sink: OutputSink = outputProvider
 
-    val names = commands.map(_.name)
+    override def commands: ImmutableSeq[Command] = core.commands
 
-    // Check for reserved help command name
-    if (names.contains(helpCommandName)) {
-      throw new IllegalArgumentException(s"'$helpCommandName' is a reserved command name")
-    }
+    override def tabComplete(line: String): ImmutableSeq[String] = core.tabComplete(lineParser.parseLine(line))
 
-    // Check for whitespace in commands
-    if (!names.forall(CharMatcher.whitespace().matchesNoneOf(_))) {
-      throw new IllegalArgumentException("Commands cannot contain whitespace")
-    }
-
-    // Check for duplicated command names
-    val duplicates = names.toStream
-      .groupBy(identity)
-      .map {
-        case (name, seq) => (name, seq.size)
-      }
-      .filter(_._2 > 1)
-    if (duplicates.nonEmpty) {
-      throw new IllegalArgumentException(s"Duplicated command name(s): ${duplicates.mkString(", ")}")
-    }
+    override def executeLine(line: String): Unit = core.execute(lineParser.parseLine(line))
   }
-
-  private[core] val helpCommandName = "help"
 }

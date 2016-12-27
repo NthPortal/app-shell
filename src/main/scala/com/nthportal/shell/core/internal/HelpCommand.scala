@@ -1,6 +1,6 @@
 package com.nthportal.shell
 package core
-package builtin
+package internal
 
 import com.nthportal.shell.util.CommandTabCompleter
 
@@ -8,9 +8,9 @@ private[core] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exten
                                                                                    with CommandTabCompleter {
   override protected val commands = this +: shellCommands.sortBy(_.name)
 
-  override val name: String = Shell.helpCommandName
+  override val name: String = ShellCore.helpCommandName
 
-  override def execute(args: ImmutableSeq[String]): Option[String] = help(args)
+  override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = sink.writeln(help(args).get)
 
   override def description: Option[String] = Some("Shows the help information for a command")
 
