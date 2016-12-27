@@ -1,8 +1,6 @@
 package com.nthportal.shell
 package util
 
-import com.nthportal.shell.core.Command
-
 import scala.collection.immutable
 
 trait CommandDelegator {

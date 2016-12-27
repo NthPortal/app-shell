@@ -1,5 +1,4 @@
 package com.nthportal.shell
-package core
 package internal
 
 import java.util.Objects
@@ -7,7 +6,7 @@ import java.util.Objects
 import com.google.common.base.CharMatcher
 import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
 
-class ShellCore private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter
+private[shell] class ShellCore private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter
                                                                     with CommandExecutor {
   val commands: ImmutableSeq[Command] = HelpCommand(commandsSeq) +: commandsSeq
 
@@ -19,8 +18,8 @@ class ShellCore private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCo
   }
 }
 
-object ShellCore {
-  private[core] def apply(commands: ImmutableSeq[Command]): ShellCore = {
+private[shell] object ShellCore {
+  def apply(commands: ImmutableSeq[Command]): ShellCore = {
     validateCommands(commands)
     new ShellCore(commands)
   }
@@ -29,7 +28,7 @@ object ShellCore {
   @throws[NullPointerException]
   def validateCommands(commands: ImmutableSeq[Command]): Unit = {
     // Check for null commands
-    commands.foreach(Objects.requireNonNull(_))
+    commands.foreach(Objects.requireNonNull[Command])
 
     val names = commands.map(_.name)
 
@@ -53,5 +52,5 @@ object ShellCore {
     }
   }
 
-  private[core] val helpCommandName = "help"
+  private[internal] val helpCommandName = "help"
 }

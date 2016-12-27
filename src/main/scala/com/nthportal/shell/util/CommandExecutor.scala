@@ -1,8 +1,6 @@
 package com.nthportal.shell
 package util
 
-import com.nthportal.shell.core.{Executable, OutputSink}
-
 trait CommandExecutor extends CommandDelegator with Executable {
   protected def noArgExecution(implicit sink: OutputSink): Unit
 

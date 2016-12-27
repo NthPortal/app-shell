@@ -1,5 +1,4 @@
 package com.nthportal.shell
-package core
 
 trait SubCommand extends Executable with TabCompletable {
   def description: Option[String] = None

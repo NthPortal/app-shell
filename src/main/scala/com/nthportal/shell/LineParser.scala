@@ -1,6 +1,4 @@
-package com.nthportal.shell.core
-
-import com.nthportal.shell.ImmutableSeq
+package com.nthportal.shell
 
 trait LineParser {
   def parseLine(line: String): ImmutableSeq[String]

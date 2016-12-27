@@ -1,10 +1,9 @@
 package com.nthportal.shell
-package core
 package internal
 
 import com.nthportal.shell.util.CommandTabCompleter
 
-private[core] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
+private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
                                                                                    with CommandTabCompleter {
   override protected val commands = this +: shellCommands.sortBy(_.name)
 

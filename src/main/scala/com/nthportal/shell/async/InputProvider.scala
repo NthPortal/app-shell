@@ -1,4 +1,4 @@
-package com.nthportal.shell.core.async
+package com.nthportal.shell.async
 
 import scala.concurrent.Future
 

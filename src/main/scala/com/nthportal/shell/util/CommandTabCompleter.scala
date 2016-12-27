@@ -1,8 +1,6 @@
 package com.nthportal.shell
 package util
 
-import com.nthportal.shell.core.TabCompletable
-
 trait CommandTabCompleter extends CommandDelegator with TabCompletable {
   override final def tabComplete(args: ImmutableSeq[String]): ImmutableSeq[String] = args match {
     case Seq() => Nil

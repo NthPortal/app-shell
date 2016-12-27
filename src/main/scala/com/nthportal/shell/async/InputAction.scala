@@ -1,9 +1,5 @@
-package com.nthportal.shell.core.async
-
-import com.nthportal.shell.ImmutableSeq
-import com.nthportal.shell.core.Shell
-
-import scala.concurrent.Future
+package com.nthportal.shell
+package async
 
 sealed trait InputAction[T] {
   def line: String
