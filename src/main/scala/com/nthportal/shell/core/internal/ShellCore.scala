@@ -1,10 +1,10 @@
 package com.nthportal.shell
 package core
+package internal
 
 import java.util.Objects
 
 import com.google.common.base.CharMatcher
-import com.nthportal.shell.core.internal.HelpCommand
 import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
 
 class ShellCore private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter

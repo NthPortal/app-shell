@@ -1,6 +1,7 @@
 package com.nthportal.shell.core
 
 import com.nthportal.shell.ImmutableSeq
+import com.nthportal.shell.core.internal.ShellCore
 
 import scala.concurrent.ExecutionContext
 
