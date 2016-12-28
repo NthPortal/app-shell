@@ -2,8 +2,6 @@ package com.nthportal.shell
 
 import com.nthportal.shell.internal.ShellCore
 
-import scala.concurrent.ExecutionContext
-
 sealed trait Shell {
   def commands: ImmutableSeq[Command]
 
@@ -17,8 +15,7 @@ sealed trait Shell {
 object Shell {
   def apply(lineParser: LineParser,
             commands: ImmutableSeq[Command],
-            outputProvider: OutputProvider)
-           (implicit ec: ExecutionContext): Shell = {
+            outputProvider: OutputProvider): Shell = {
     Impl(ShellCore(commands), lineParser, outputProvider)
   }
 
