@@ -4,8 +4,8 @@ package internal
 import com.nthportal.shell.util.CommandTabCompleter
 
 private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
-                                                                                   with CommandTabCompleter {
-  override protected val commands = this +: shellCommands.sortBy(_.name)
+                                                                                    with CommandTabCompleter {
+  override protected final val commands = this +: shellCommands.sortBy(_.name)
 
   override val name: String = ShellCore.helpCommandName
 
@@ -20,14 +20,14 @@ private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exte
     else getHelpForCommand(args.head, args.tail)
   }
 
-  private def getHelpForCommand(command: String, args: ImmutableSeq[String]): String = {
+  private def getHelpForCommand(command: String, subArgs: ImmutableSeq[String]): String = {
     if (command == name) descriptionForCommand(this)
     else {
       commandsByName.get(command)
-        .map(_.help(args.tail))
-        .map(_.getOrElse(noHelp(args)))
+        .map(_.help(subArgs))
+        .map(_.getOrElse(noHelp(subArgs)))
         .map {
-          case "" => noHelp(args)
+          case "" => noHelp(subArgs)
           case s => s
         }
         .getOrElse(s"No such command: $command")
@@ -35,7 +35,7 @@ private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exte
   }
 
   private def descriptionForCommand(command: Command): String = {
-     s"${command.name} - \t${command.description.getOrElse("No description provided")}"
+    s"${command.name} - \t${command.description.getOrElse("No description provided")}"
   }
 
   private def helpMessage: String = commands.map(descriptionForCommand).mkString("\n")
