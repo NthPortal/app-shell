@@ -8,6 +8,7 @@ import com.nthportal.shell.compat.{Command => JCommand, LineParser => JLineParse
 import com.nthportal.shell.{Command => SCommand, LineParser => SLineParser}
 
 import scala.collection.JavaConverters
+import scala.language.implicitConversions
 
 object Converters {
   implicit def asJavaLineParser(parser: SLineParser): JLineParser = {

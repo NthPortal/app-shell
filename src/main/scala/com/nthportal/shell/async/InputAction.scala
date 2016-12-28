@@ -4,20 +4,18 @@ package async
 import scala.concurrent.{Future, Promise}
 import scala.util.Try
 
-sealed trait InputAction[T] {
+trait InputAction[T] {
   private val promise = Promise[T]
 
   def future: Future[T] = promise.future
 
-  private[async] def doAction(implicit shell: Shell): Unit = promise.complete(Try(action))
+  private[async] def doAction(implicit shell: Shell): Unit = promise.complete(Try(action(shell)))
 
-  private[async] def action(implicit shell: Shell): T
+  private[InputAction] def action(shell: Shell): T
 }
 
-case class TabCompletion(line: String) extends InputAction[ImmutableSeq[String]] {
-  override private[async] def action(implicit shell: Shell) = shell.tabComplete(line)
-}
+object InputAction {
+  def tabCompletion(line: String): InputAction[ImmutableSeq[String]] = _.tabComplete(line)
 
-case class Execution(line: String) extends InputAction[Unit] {
-  override private[async] def action(implicit shell: Shell) = shell.executeLine(line)
+  def execution(line: String): InputAction[Unit] = _.executeLine(line)
 }
