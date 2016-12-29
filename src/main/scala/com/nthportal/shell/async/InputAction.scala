@@ -11,7 +11,18 @@ trait InputAction[T] {
 
   private[async] def doAction(implicit shell: Shell): Unit = promise.complete(Try(action(shell)))
 
-  private[InputAction] def action(shell: Shell): T
+  /**
+    * Performs an action using a shell. After completing, the result of the
+    * action will be available in [[future]].
+    *
+    * Note: This method should NOT be called from within [[AsyncShell]];
+    * use [[doAction]] instead. (It is only accessible outside of the local
+    * scope for use in Java-compatible classes.)
+    *
+    * @param shell the shell with which to perform the action
+    * @return the result of the action
+    */
+  private[shell] def action(shell: Shell): T
 }
 
 object InputAction {

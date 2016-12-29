@@ -5,11 +5,10 @@ import java.util.concurrent.Executors
 
 import scala.concurrent.{ExecutionContext, Future, Promise}
 
-final class AsyncShell private(inputProvider: InputProvider)(implicit shell: Shell) {
+final class AsyncShell private(inputProvider: InputProvider)(implicit shell: Shell, ec: ExecutionContext) {
   @volatile
   private var terminated: Boolean = false
   private val termination = Promise[Unit]
-  implicit private val ec = ExecutionContext.fromExecutorService(Executors.newSingleThreadExecutor())
 
   private def run(): Unit = {
     if (terminated) termination.success(Unit)
@@ -26,9 +25,15 @@ final class AsyncShell private(inputProvider: InputProvider)(implicit shell: She
 }
 
 object AsyncShell {
-  def apply(inputProvider: InputProvider, shell: Shell): AsyncShell = {
-    val asyncShell = new AsyncShell(inputProvider)(shell)
+  def apply(inputProvider: InputProvider, shell: Shell): AsyncShell = apply(inputProvider)(shell, defaultContext)
+
+  private[shell] def apply(inputProvider: InputProvider)(implicit shell: Shell, ec: ExecutionContext): AsyncShell = {
+    val asyncShell = new AsyncShell(inputProvider)
     asyncShell.run()
     asyncShell
+  }
+
+  private[shell] def defaultContext: ExecutionContext = {
+    ExecutionContext.fromExecutorService(Executors.newSingleThreadExecutor())
   }
 }
