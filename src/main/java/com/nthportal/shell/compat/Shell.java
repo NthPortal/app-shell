@@ -14,6 +14,12 @@ public interface Shell {
     void executeLine(String line);
 
     static Shell create(LineParser lineParser, List<Command> commands, OutputProvider outputProvider) {
-        return JCompatShell.apply(lineParser, commands, outputProvider);
+        return JCompatShell.create(lineParser, commands, outputProvider);
+    }
+
+    static Shell create(com.nthportal.shell.LineParser lineParser,
+                        List<Command> commands,
+                        OutputProvider outputProvider) {
+        return JCompatShell.create0(lineParser, commands, outputProvider);
     }
 }

@@ -4,8 +4,8 @@ package compat
 import java.util
 
 import com.nthportal.shell.compat.Converters._
-import com.nthportal.shell.compat.{Shell => JShell}
-import com.nthportal.shell.{Shell => SShell}
+import com.nthportal.shell.compat.{Shell => JShell, LineParser => JLineParser}
+import com.nthportal.shell.{Shell => SShell, LineParser => SLineParser}
 
 import scala.collection.JavaConverters
 
@@ -20,7 +20,11 @@ private[compat] class JCompatShell(shell: SShell) extends JShell {
 }
 
 private[compat] object JCompatShell {
-  def apply(lineParser: LineParser, commands: util.List[Command], outputProvider: OutputProvider): JCompatShell = {
+  def create(lineParser: JLineParser, commands: util.List[Command], outputProvider: OutputProvider): JShell = {
+    create0(lineParser, commands, outputProvider)
+  }
+
+  def create0(lineParser: SLineParser, commands: util.List[Command], outputProvider: OutputProvider): JShell = {
     new JCompatShell(SShell(lineParser, listToScalaImmutableSeq(commands).map(asScalaCommand), outputProvider))
   }
 }
