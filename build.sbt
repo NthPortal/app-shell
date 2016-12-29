@@ -6,5 +6,6 @@ scalaVersion := "2.12.1"
 
 libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "20.0",
+  "com.typesafe.akka" %% "akka-agent" % "2.4.14",
   "org.scalatest" %% "scalatest" % "3.0.1" % Test
 )

@@ -3,8 +3,6 @@ package com.nthportal.example.shell.console
 import com.nthportal.shell.{Command, ImmutableSeq, OutputSink, Shell}
 import com.nthportal.shell.parsers.WhitespaceDelineatingParser
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class ConsoleShell {
   private var closed = false
   private val buf = StringBuilder.newBuilder
