@@ -18,14 +18,10 @@ private[async] class JCompatInputAction[T](inputAction: SInputAction[T]) extends
 
 private[async] object JCompatInputAction {
   def tabCompletion(line: String): JInputAction[util.List[String]] = {
-    val action = SInputAction.tabCompletion(line)
-    val mapped: SInputAction[util.List[String]] = shell => JavaConverters.seqAsJavaList(action.action(shell))
-    new JCompatInputAction(mapped)
+    new JCompatInputAction(shell => JavaConverters.seqAsJavaList(SInputAction.tabCompletion(line).action(shell)))
   }
 
   def execution(line: String): JInputAction[Void] = {
-    val action = SInputAction.execution(line)
-    val mapped: SInputAction[Void] = shell => {action.action(shell); null}
-    new JCompatInputAction(mapped)
+    new JCompatInputAction(shell => {SInputAction.execution(line).action(shell); null})
   }
 }
