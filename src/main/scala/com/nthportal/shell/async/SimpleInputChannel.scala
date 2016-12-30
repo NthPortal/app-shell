@@ -1,15 +1,15 @@
 package com.nthportal.shell.async
 
 import akka.agent.Agent
-import com.nthportal.shell.async.SimpleInputProvider.ActionQueue
+import com.nthportal.shell.async.SimpleInputChannel.ActionQueue
 
 import scala.collection.immutable.Queue
 import scala.concurrent.{ExecutionContext, Future, Promise}
 
-final class SimpleInputProvider(implicit ec: ExecutionContext = ExecutionContext.global) extends InputProvider {
+final class SimpleInputChannel(implicit ec: ExecutionContext = ExecutionContext.global) extends InputChannel {
   private val agent = Agent(ActionQueue(Queue.empty, Queue.empty))
 
-  def appendAction(action: InputAction[_]): Unit = {
+  override def sendAction[T](action: InputAction[T]): Future[T] = {
     agent.send(queue => {
       val promised = queue.promisedActions
       if (promised.nonEmpty) {
@@ -17,6 +17,7 @@ final class SimpleInputProvider(implicit ec: ExecutionContext = ExecutionContext
         ActionQueue(promised.tail, queue.waitingActions)
       } else ActionQueue(promised, queue.waitingActions :+ action)
     })
+    action.future
   }
 
   override def nextAction: Future[InputAction[_]] = {
@@ -32,6 +33,6 @@ final class SimpleInputProvider(implicit ec: ExecutionContext = ExecutionContext
   }
 }
 
-private object SimpleInputProvider {
+private object SimpleInputChannel {
   case class ActionQueue(promisedActions: Queue[Promise[InputAction[_]]], waitingActions: Queue[InputAction[_]])
 }
