@@ -1,2 +1,2 @@
-# scala-shell
+# app-shell
 A framework for creating shells/CLIs for an application
