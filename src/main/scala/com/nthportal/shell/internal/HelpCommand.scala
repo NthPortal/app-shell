@@ -21,24 +21,35 @@ private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exte
   }
 
   private def getHelpForCommand(command: String, subArgs: ImmutableSeq[String]): String = {
-    if (command == name) descriptionForCommand(this)
+    if (command == name) formattedDescription(this)
     else {
       commandsByName.get(command)
-        .map(_.help(subArgs))
-        .map(_.getOrElse(noHelp(subArgs)))
-        .map {
-          case "" => noHelp(subArgs)
-          case s => s
-        }
+        .map(fullHelp(_, subArgs))
         .getOrElse(s"No such command: $command")
     }
   }
 
-  private def descriptionForCommand(command: Command): String = {
-    s"${command.name} - \t${command.description.getOrElse("No description provided")}"
+  private def fullHelp(command: Command, subArgs: ImmutableSeq[String]): String = {
+    val descriptionStr = blankStringToNone(command.description)
+    val helpStr = blankStringToNone(command.help(subArgs))
+
+    if (descriptionStr.isEmpty) helpStr.getOrElse(noHelp(command, subArgs))
+    else if (helpStr.isEmpty) formattedDescription(command)
+    else s"${formattedDescription(command)}\n\n${helpStr.get}"
   }
 
-  private def helpMessage: String = commands.map(descriptionForCommand).mkString("\n")
+  private def formattedDescription(command: Command): String = {
+    s"${command.name} - \t${blankStringToNone(command.description).getOrElse("No description provided")}"
+  }
 
-  private def noHelp(args: ImmutableSeq[String]): String = s"No help for: ${args.mkString(" ")}"
+  private def helpMessage: String = commands.map(formattedDescription).mkString("\n")
+
+  private def noHelp(command: Command, subArgs: ImmutableSeq[String]): String = {
+    s"No help for `${command.name}` with: ${subArgs.mkString(" ")}"
+  }
+
+  private def blankStringToNone(option: Option[String]): Option[String] = option match {
+    case Some(s) if s.trim.isEmpty => None
+    case o => o
+  }
 }
