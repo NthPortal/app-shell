@@ -4,6 +4,8 @@ package impl
 import scala.collection.mutable
 
 class StatefulOutputProvider extends OutputProvider {
+  import StatefulOutputProvider._
+
   private var _writtenTo = false
   private val linesWritten = mutable.Buffer[String]()
 
@@ -12,6 +14,8 @@ class StatefulOutputProvider extends OutputProvider {
   def writtenTo: Boolean = _writtenTo
 
   def lines: List[String] = linesWritten.toList
+
+  def state: State = State(_writtenTo, lines, currentLine.mkString)
 
   override def write(charSequence: CharSequence): Unit = {
     _writtenTo = true
@@ -23,4 +27,10 @@ class StatefulOutputProvider extends OutputProvider {
     linesWritten += currentLine.mkString
     currentLine.clear()
   }
+}
+
+object StatefulOutputProvider {
+  def apply(): StatefulOutputProvider = new StatefulOutputProvider()
+
+  case class State(writtenTo: Boolean, lines: List[String], currentLine: String)
 }
