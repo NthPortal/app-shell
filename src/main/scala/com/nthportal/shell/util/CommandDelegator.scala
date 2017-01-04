@@ -4,7 +4,7 @@ package util
 import scala.collection.immutable
 
 trait CommandDelegator {
-  protected def commands: ImmutableSeq[Command]
+  protected def commands: ImmutableIterable[Command]
 
   /**
     * Field must be lazy so that [[commands `commands`]]

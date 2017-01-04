@@ -8,7 +8,7 @@ import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
 
 private[shell] class ShellCore private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter
                                                                     with CommandExecutor {
-  override final val commands: ImmutableSeq[Command] = HelpCommand(commandsSeq) +: commandsSeq
+  override final val commands: ImmutableIterable[Command] = (HelpCommand(commandsSeq) +: commandsSeq).sortBy(_.name)
 
   override protected def noArgExecution(implicit sink: OutputSink): Unit = {}
 

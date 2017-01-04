@@ -5,9 +5,10 @@ import com.nthportal.shell.util.CommandTabCompleter
 
 private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
                                                                                     with CommandTabCompleter {
-  override protected final val commands = this +: shellCommands.sortBy(_.name)
-
+  // This field must be declared before `commands` is sorted (during initialization)
   override val name: String = ShellCore.helpCommandName
+
+  override protected final val commands = (this +: shellCommands).sortBy(_.name)
 
   override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = sink.writeln(help(args).get)
 

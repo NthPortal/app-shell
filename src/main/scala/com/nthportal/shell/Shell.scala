@@ -3,7 +3,7 @@ package com.nthportal.shell
 import com.nthportal.shell.internal.ShellCore
 
 sealed trait Shell {
-  def commands: ImmutableSeq[Command]
+  def commands: ImmutableIterable[Command]
 
   def lineParser: LineParser
 
@@ -24,7 +24,7 @@ object Shell {
                           outputProvider: OutputProvider) extends Shell {
     implicit private def sink: OutputSink = outputProvider
 
-    override def commands: ImmutableSeq[Command] = core.commands
+    override def commands: ImmutableIterable[Command] = core.commands
 
     override def tabComplete(line: String): ImmutableSeq[String] = {
       core.tabComplete(lineParser.parseLineForTabCompletion(line))
