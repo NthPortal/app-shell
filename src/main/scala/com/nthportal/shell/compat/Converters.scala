@@ -11,12 +11,14 @@ import scala.collection.JavaConverters
 import scala.language.implicitConversions
 
 object Converters {
-  implicit def asJavaLineParser(parser: SLineParser): JLineParser = {
-    (line: String) => JavaConverters.seqAsJavaList(parser.parseLine(line))
+  implicit def asJavaLineParser(parser: SLineParser): JLineParser = parser match {
+    case p: SCompatLineParser => p.parser
+    case _ => new JCompatLineParser(parser)
   }
 
-  implicit def asScalaLineParser(parser: JLineParser): SLineParser = {
-    (line: String) => listToScalaImmutableSeq(parser.parseLine(line))
+  implicit def asScalaLineParser(parser: JLineParser): SLineParser = parser match {
+    case p: JCompatLineParser => p.parser
+    case _ => new SCompatLineParser(parser)
   }
 
   implicit def asJavaOptional[T](option: Option[T]): Optional[T] = option match {

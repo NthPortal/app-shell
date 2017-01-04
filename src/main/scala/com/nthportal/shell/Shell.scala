@@ -26,8 +26,10 @@ object Shell {
 
     override def commands: ImmutableSeq[Command] = core.commands
 
-    override def tabComplete(line: String): ImmutableSeq[String] = core.tabComplete(lineParser.parseLine(line))
+    override def tabComplete(line: String): ImmutableSeq[String] = {
+      core.tabComplete(lineParser.parseLineForTabCompletion(line))
+    }
 
-    override def executeLine(line: String): Unit = core.execute(lineParser.parseLine(line))
+    override def executeLine(line: String): Unit = core.execute(lineParser.parseLineForExecution(line))
   }
 }
