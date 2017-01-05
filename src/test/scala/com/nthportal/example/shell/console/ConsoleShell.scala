@@ -12,8 +12,6 @@ class ConsoleShell {
 
     override val description: Option[String] = Some("terminates the shell")
 
-    override def help(args: ImmutableSeq[String]): Option[String] = description
-
     override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = {
       println("Terminating Shell")
       closed = true

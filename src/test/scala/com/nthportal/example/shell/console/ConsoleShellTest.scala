@@ -3,8 +3,10 @@ package com.nthportal.example.shell.console
 import org.scalatest.{FlatSpec, Matchers}
 
 class ConsoleShellTest extends FlatSpec with Matchers {
-  "ConsoleShell" should "be constructed (without issue)" in {
-    new ConsoleShell // Should not throw an exception
+  behavior of "ConsoleShell"
+
+  it should "be constructed (without issue)" in {
+    noException should be thrownBy {new ConsoleShell}
   }
 
   /** To test the shell, replace `ignore` with `it` */
