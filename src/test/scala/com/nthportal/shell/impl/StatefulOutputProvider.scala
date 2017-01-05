@@ -17,15 +17,15 @@ class StatefulOutputProvider extends OutputProvider {
 
   def state: State = State(_writtenTo, lines, currentLine.mkString)
 
-  override def write(charSequence: CharSequence): Unit = {
-    if (charSequence.toString.nonEmpty) {
+  override def write(s: String): Unit = {
+    if (s.nonEmpty) {
       _writtenTo = true
-      currentLine ++= charSequence.toString
+      currentLine ++= s
     }
   }
 
-  override def writeln(charSequence: CharSequence): Unit = {
-    write(charSequence)
+  override def writeln(s: String): Unit = {
+    write(s)
     linesWritten += currentLine.mkString
     currentLine.clear()
   }

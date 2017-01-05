@@ -3,7 +3,7 @@ package com.nthportal.shell.impl
 import com.nthportal.shell.OutputProvider
 
 object NoOpOutputProvider extends OutputProvider {
-  override def write(charSequence: CharSequence): Unit = {}
+  override def write(s: String): Unit = {}
 
-  override def writeln(charSequence: CharSequence): Unit = {}
+  override def writeln(s: String): Unit = {}
 }
