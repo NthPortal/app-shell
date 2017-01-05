@@ -33,6 +33,6 @@ class ShellTest extends FlatSpec with Matchers {
     shell.tabComplete(testCommand.name.substring(0, 2)) should contain(testCommand.name)
     shell.tabComplete(testCommand.name) should contain(testCommand.name)
     shell.tabComplete(testCommand.name + " other text") should not contain testCommand.name
-    shell.tabComplete("not-a-command with args") should have length 0
+    shell.tabComplete("not-a-command with args") shouldBe empty
   }
 }

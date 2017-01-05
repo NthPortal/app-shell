@@ -11,6 +11,6 @@ class CommandTabCompleterTest extends FlatSpec with Matchers {
       override protected def commands = List(TestCommand())
     }
 
-    ctc.tabComplete(Nil) should have length 0
+    ctc.tabComplete(Nil) shouldBe empty
   }
 }

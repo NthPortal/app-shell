@@ -18,8 +18,10 @@ class StatefulOutputProvider extends OutputProvider {
   def state: State = State(_writtenTo, lines, currentLine.mkString)
 
   override def write(charSequence: CharSequence): Unit = {
-    _writtenTo = true
-    currentLine ++= charSequence.toString
+    if (charSequence.toString.nonEmpty) {
+      _writtenTo = true
+      currentLine ++= charSequence.toString
+    }
   }
 
   override def writeln(charSequence: CharSequence): Unit = {

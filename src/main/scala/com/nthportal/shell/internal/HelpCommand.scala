@@ -3,18 +3,18 @@ package internal
 
 import com.nthportal.shell.util.CommandTabCompleter
 
-private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
-                                                                                    with CommandTabCompleter {
+private[internal] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
+                                                                                       with CommandTabCompleter {
   // This field must be declared before `commands` is sorted (during initialization)
   override val name: String = ShellCore.helpCommandName
 
   override protected final val commands = (this +: shellCommands).sortBy(_.name)
 
-  override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = sink.writeln(help(args).get)
+  override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = sink.writeln(getHelp(args))
 
   override def description: Option[String] = Some("Shows the help information for a command")
 
-  override def help(args: ImmutableSeq[String]): Option[String] = Some(getHelp(args))
+  override def help(args: ImmutableSeq[String]): Option[String] = Some(usage)
 
   private def getHelp(args: ImmutableSeq[String]): String = {
     if (args.isEmpty) helpMessage
@@ -22,12 +22,9 @@ private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exte
   }
 
   private def getHelpForCommand(command: String, subArgs: ImmutableSeq[String]): String = {
-    if (command == name) formattedDescription(this)
-    else {
-      commandsByName.get(command)
-        .map(fullHelp(_, subArgs))
-        .getOrElse(s"No such command: $command")
-    }
+    commandsByName.get(command)
+      .map(fullHelp(_, subArgs))
+      .getOrElse(s"No such command: $command")
   }
 
   private def fullHelp(command: Command, subArgs: ImmutableSeq[String]): String = {
@@ -42,6 +39,10 @@ private[shell] case class HelpCommand(shellCommands: ImmutableSeq[Command]) exte
   private def formattedDescription(command: Command): String = {
     s"${command.name} - \t${blankStringToNone(command.description).getOrElse("No description provided")}"
   }
+
+  private def usage: String =
+    s"Usage: $name\n" +
+    s"       $name <command> [args...]"
 
   private def helpMessage: String = commands.map(formattedDescription).mkString("\n")
 
