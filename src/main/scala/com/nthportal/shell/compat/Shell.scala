@@ -8,7 +8,7 @@ import com.nthportal.shell.{OutputProvider, LineParser => SLineParser, Shell => 
 import scala.collection.JavaConverters
 
 final class Shell private(private[compat] val underlying: SShell) {
-  def commands: util.List[Command] = JavaConverters.seqAsJavaList(underlying.commands.map(asJavaCommand))
+  def commands: java.lang.Iterable[Command] = JavaConverters.asJavaIterable(underlying.commands.map(asJavaCommand))
 
   def lineParser: LineParser = underlying.lineParser
 
