@@ -6,7 +6,7 @@ class ConsoleShellTest extends FlatSpec with Matchers {
   behavior of "ConsoleShell"
 
   it should "be constructed (without issue)" in {
-    noException should be thrownBy new ConsoleShell
+    noException should be thrownBy {new ConsoleShell}
   }
 
   /** To test the shell, replace `ignore` with `it` */
