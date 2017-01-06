@@ -77,7 +77,7 @@ object AsyncShell {
     */
   private class CancellableInputProvider(inputProvider: InputProvider) extends InputProvider {
     private val tuple: AtomicReference[(Boolean, Promise[InputAction[_]])] =
-      new AtomicReference((false, Promise[InputAction[_]]()))
+      new AtomicReference((false, Promise.successful[InputAction[_]](_ => Unit)))
 
     /**
       * Attempts to cancel/halt this [[InputProvider]].
@@ -96,7 +96,7 @@ object AsyncShell {
       val p = Promise[InputAction[_]]()
       val (cancelled, old) = tuple.getAndUpdate({ case (c, _) => (c, p) })
 
-      if (!old.isCompleted) throw new IllegalStateException("Previous action is not yet complete")
+      if (!old.isCompleted) throw new IllegalStateException("Previous action is not completed")
 
       if (!cancelled) {
         p.tryCompleteWith(inputProvider.nextAction)
