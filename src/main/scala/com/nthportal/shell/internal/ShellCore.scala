@@ -45,6 +45,14 @@ private[shell] object ShellCore {
   }
 
   /**
+    * Creates a new shell core.
+    *
+    * @param commands the commands with which to create the shell core
+    * @return a new shell core with the given commands
+    */
+  def apply(commands: Command*): ShellCore = apply(commands.to[ImmutableSeq])
+
+  /**
     * Checks that all commands in a sequence are valid.
     *
     * @param commands the commands to check
