@@ -31,9 +31,15 @@ object Converters {
     else None
   }
 
-  def asJavaCommand(command: SCommand): JCommand = new JCompatCommand(command)
+  def asJavaCommand(command: SCommand): JCommand = command match {
+    case c: SCompatCommand => c.command
+    case _ => new JCompatCommand(command)
+  }
 
-  def asScalaCommand(command: JCommand): SCommand = new SCompatCommand(command)
+  def asScalaCommand(command: JCommand): SCommand = command match {
+    case c: JCompatCommand => c.command
+    case _ => new SCompatCommand(command)
+  }
 
   def listToScalaImmutableSeq[T](list: util.List[T]): ImmutableSeq[T] = {
     JavaConverters.asScalaBuffer(list).to[ImmutableSeq]

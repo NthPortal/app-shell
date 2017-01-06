@@ -18,19 +18,17 @@ final class Shell private(private[compat] val underlying: SShell) {
 }
 
 object Shell {
-  def create(lineParser: LineParser, commands: util.List[Command], outputProvider: OutputProvider): Shell = {
-    create0(lineParser, commands, outputProvider)
+  def create(lineParser: LineParser, outputProvider: OutputProvider, commands: util.List[Command]): Shell = {
+    create0(lineParser, outputProvider, commands)
   }
 
   def create(lineParser: com.nthportal.shell.LineParser,
-             commands: util.List[Command],
-             outputProvider: OutputProvider): Shell = {
-    create0(lineParser, commands, outputProvider)
+             outputProvider: OutputProvider,
+             commands: util.List[Command]): Shell = {
+    create0(lineParser, outputProvider, commands)
   }
 
-  private def create0(lineParser: SLineParser,
-                      commands: util.List[Command],
-                      outputProvider: OutputProvider): Shell = {
-    new Shell(SShell(lineParser, listToScalaImmutableSeq(commands).map(asScalaCommand), outputProvider))
+  private def create0(lineParser: SLineParser, outputProvider: OutputProvider, commands: util.List[Command]) = {
+    new Shell(SShell(lineParser, outputProvider, listToScalaImmutableSeq(commands).map(asScalaCommand)))
   }
 }

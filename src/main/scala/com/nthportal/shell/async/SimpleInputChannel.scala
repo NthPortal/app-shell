@@ -6,6 +6,14 @@ import com.nthportal.shell.async.SimpleInputChannel.ActionQueue
 import scala.collection.immutable.Queue
 import scala.concurrent.{ExecutionContext, Future, Promise}
 
+/**
+  * A simple [[InputChannel]] implementation.
+  *
+  * This implementation uses an [[Agent]] which executes in the given
+  * implicit [[ExecutionContext]].
+  *
+  * @param ec the context in which to execute this
+  */
 final class SimpleInputChannel(implicit ec: ExecutionContext = ExecutionContext.global) extends InputChannel {
   private val agent = Agent(ActionQueue(Queue.empty, Queue.empty))
 

@@ -7,7 +7,7 @@ import com.nthportal.shell.{Command => SCommand}
 
 import scala.collection.JavaConverters
 
-private[compat] class SCompatCommand(command: JCommand) extends SCommand {
+private[compat] class SCompatCommand(val command: JCommand) extends SCommand {
   override val name: String = command.name
 
   override def description: Option[String] = command.description
