@@ -30,6 +30,11 @@ private[shell] class ShellCore private(commandsSeq: ImmutableSeq[Command]) exten
                                                (implicit sink: OutputSink): Unit = {
     sink.writeln(s"Command not found: $command")
   }
+
+  override def equals(obj: Any): Boolean = obj match {
+    case that: ShellCore => commands == that.commands
+    case _ => false
+  }
 }
 
 private[shell] object ShellCore {

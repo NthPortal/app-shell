@@ -37,4 +37,11 @@ class ShellCoreTest extends FlatSpec with Matchers {
     core.execute(List("not-a-command"))(os2)
     os2.writtenTo should be(true)
   }
+
+  it should "check equality properly" in {
+    val t = TestCommand()
+    val core = ShellCore(t)
+    core shouldEqual ShellCore(t)
+    core should not equal "something which isn't a ShellCore"
+  }
 }
