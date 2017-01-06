@@ -42,15 +42,29 @@ object Shell {
   /**
     * Creates a shell.
     *
-    * @param lineParser the [[LineParser]] to use for the shell
-    * @param commands the commands for the shell to execute
+    * @param lineParser     the [[LineParser]] to use for the shell
     * @param outputProvider the [[OutputProvider]] for the shell
+    * @param commands       the commands for the shell to execute
     * @return a shell created with the given parameters
     */
   def apply(lineParser: LineParser,
-            commands: ImmutableSeq[Command],
-            outputProvider: OutputProvider): Shell = {
+            outputProvider: OutputProvider,
+            commands: ImmutableSeq[Command]): Shell = {
     Impl(ShellCore(commands), lineParser, outputProvider)
+  }
+
+  /**
+    * Creates a shell.
+    *
+    * @param lineParser     the [[LineParser]] to use for the shell
+    * @param outputProvider the [[OutputProvider]] for the shell
+    * @param commands       the commands for the shell to execute
+    * @return a shell created with the given parameters
+    */
+  def apply(lineParser: LineParser,
+            outputProvider: OutputProvider,
+            commands: Command*): Shell = {
+    Impl(ShellCore(commands: _*), lineParser, outputProvider)
   }
 
   private case class Impl(core: ShellCore,

@@ -7,7 +7,7 @@ import org.scalatest.{FlatSpec, Matchers}
 class ShellTest extends FlatSpec with Matchers {
   private val testCommand = new TestCommand
   private val outputProvider = new StatefulOutputProvider
-  private val shell = Shell(WhitespaceDelineatingParser, List(testCommand, WriteCommand), outputProvider)
+  private val shell = Shell(WhitespaceDelineatingParser, outputProvider, testCommand, WriteCommand)
 
   behavior of "Shell"
 
