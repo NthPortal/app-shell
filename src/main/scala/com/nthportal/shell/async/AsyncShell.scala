@@ -23,16 +23,16 @@ final class AsyncShell private(inputProvider: InputProvider)(implicit shell: She
   private val termination = Promise[Unit]
 
   private def run(): Unit = {
-    handleNextAction().onComplete {
-      case Success(_) => run()
-      case Failure(t) => t match {
-        case TerminationException => termination.success(Unit)
-        case t2 => termination.failure(t2)
+    cip.nextAction
+      .map(_.doAction)
+      .onComplete {
+        case Success(_) => run()
+        case Failure(t) => t match {
+          case TerminationException => termination.success(Unit)
+          case t2 => termination.failure(t2)
+        }
       }
-    }
   }
-
-  private def handleNextAction(): Future[Unit] = for (action <- cip.nextAction) yield action.doAction
 
   /**
     * Terminates this asynchronous shell so that it will no longer process inputs.
