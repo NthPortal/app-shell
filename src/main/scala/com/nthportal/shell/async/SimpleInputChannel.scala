@@ -48,8 +48,9 @@ final class SimpleInputChannel extends InputChannel {
   }
 }
 
-private object SimpleInputChannel {
+object SimpleInputChannel {
+  def apply(): SimpleInputChannel = new SimpleInputChannel()
 
-  case class ActionQueue(promises: Queue[Promise[InputAction[_]]], actions: Queue[InputAction[_]])
+  private case class ActionQueue(promises: Queue[Promise[InputAction[_]]], actions: Queue[InputAction[_]])
 
 }
