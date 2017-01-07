@@ -1,8 +1,7 @@
-package com.nthportal.shell.parsers
+package com.nthportal.shell
+package parsers
 
-import org.scalatest.{FlatSpec, Matchers}
-
-class WhitespaceDelineatingParserTest extends FlatSpec with Matchers {
+class WhitespaceDelineatingParserTest extends SimpleSpec {
   behavior of "WhitespaceDelineatingParser"
 
   it should "parse lines correctly for execution" in {

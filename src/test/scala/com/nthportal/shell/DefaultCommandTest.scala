@@ -1,8 +1,6 @@
 package com.nthportal.shell
 
-import org.scalatest.{FlatSpec, Matchers}
-
-class DefaultCommandTest extends FlatSpec with Matchers {
+class DefaultCommandTest extends SimpleSpec {
   behavior of "Default Command"
 
   it should "return `None` for `description` and `help` methods" in {
