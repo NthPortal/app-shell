@@ -4,7 +4,7 @@ package util
 import com.nthportal.shell.impl.TestCommand
 
 class CommandTabCompleterTest extends SimpleSpec {
-  behavior of "CommandTabCompleter"
+  behavior of nameOf[CommandTabCompleter]
 
   it should "return an empty seq when given an empty list of arguments" in {
     val ctc = new CommandTabCompleter {

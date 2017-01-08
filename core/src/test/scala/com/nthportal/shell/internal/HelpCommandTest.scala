@@ -4,7 +4,7 @@ package internal
 import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand}
 
 class HelpCommandTest extends SimpleSpec {
-  behavior of "HelpCommand"
+  behavior of nameOf[HelpCommand]
 
   it should "have the correct name" in {
     HelpCommand(Nil).name should be(ShellCore.helpCommandName)

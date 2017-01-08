@@ -3,7 +3,7 @@ package com.nthportal.example.shell.console
 import com.nthportal.shell.SimpleSpec
 
 class ConsoleShellTest extends SimpleSpec {
-  behavior of "ConsoleShell"
+  behavior of nameOf[ConsoleShell]
 
   it should "be constructed (without issue)" in {
     noException should be thrownBy {new ConsoleShell}

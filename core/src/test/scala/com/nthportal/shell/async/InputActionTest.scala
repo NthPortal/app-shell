@@ -10,7 +10,7 @@ import scala.util.control.NoStackTrace
 
 class InputActionTest extends SimpleSpec {
 
-  behavior of classOf[InputAction[_]].getSimpleName
+  behavior of nameOf[InputAction[_]]
 
   it should "execute an execution properly" in {
     val os = StatefulOutputProvider()

@@ -1,7 +1,7 @@
 package com.nthportal.shell
 
 class DefaultCommandTest extends SimpleSpec {
-  behavior of "Default Command"
+  behavior of s"Default ${nameOf[Command]}"
 
   it should "return `None` for `description` and `help` methods" in {
     val c = new Command {

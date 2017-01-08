@@ -2,7 +2,8 @@
 /*
 
 # Source files
-!/src
+!/core/src
+!/macros/src
 
 # Project configuration files
 !/project

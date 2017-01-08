@@ -8,7 +8,7 @@ class ShellTest extends SimpleSpec {
   private val outputProvider = new StatefulOutputProvider
   private val shell = Shell(WhitespaceDelineatingParser, outputProvider, testCommand, WriteCommand)
 
-  behavior of "Shell"
+  behavior of nameOf[Shell]
 
   it should "produce equivalent shells with both factory methods" in {
     val shell2 = Shell(WhitespaceDelineatingParser, outputProvider, List(testCommand, WriteCommand))

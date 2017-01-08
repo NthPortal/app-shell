@@ -5,7 +5,7 @@ class SimpleInputChannelTest extends SimpleSpec {
 
   import SimpleInputChannelTest._
 
-  behavior of classOf[SimpleInputChannel].getSimpleName
+  behavior of nameOf[SimpleInputChannel]
 
   it should "complete Futures from `nextAction` after `sendAction` is invoked" in {
     val channel = SimpleInputChannel()
