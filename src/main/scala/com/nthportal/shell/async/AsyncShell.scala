@@ -93,6 +93,7 @@ object AsyncShell {
       val p = Promise[InputAction[_]]()
       val (cancelled, old) = tuple.getAndUpdate({ case (c, _) => (c, p) })
 
+      // Assertion about state. Ideally, this condition should never evaluate to `true`.
       if (!old.isCompleted) throw new IllegalStateException("Previous action is not completed")
 
       if (!cancelled) {
