@@ -10,8 +10,6 @@ import scala.collection.JavaConverters
 final class Shell private(private[compat] val underlying: SShell) {
   def commands: java.lang.Iterable[Command] = JavaConverters.asJavaIterable(underlying.commands.map(asJavaCommand))
 
-  def lineParser: LineParser = underlying.lineParser
-
   def tabComplete(line: String): util.List[String] = JavaConverters.seqAsJavaList(underlying.tabComplete(line))
 
   def executeLine(line: String): Unit = underlying.executeLine(line)

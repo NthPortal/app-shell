@@ -14,13 +14,6 @@ sealed trait Shell {
   def commands: ImmutableIterable[Command]
 
   /**
-    * Returns the [[LineParser]] which this shell uses to parse lines.
-    *
-    * @return the LineParser which this shell uses to parse lines
-    */
-  def lineParser: LineParser
-
-  /**
     * Returns a sequence of suggested completions for the final argument
     * of a line. Returns an empty sequence if no suggestions are available
     * for a line.

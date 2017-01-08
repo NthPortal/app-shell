@@ -11,15 +11,7 @@ import scala.collection.JavaConverters
 import scala.language.implicitConversions
 
 object Converters {
-  implicit def asJavaLineParser(parser: SLineParser): JLineParser = parser match {
-    case p: SCompatLineParser => p.parser
-    case _ => new JCompatLineParser(parser)
-  }
-
-  implicit def asScalaLineParser(parser: JLineParser): SLineParser = parser match {
-    case p: JCompatLineParser => p.parser
-    case _ => new SCompatLineParser(parser)
-  }
+  implicit def asScalaLineParser(parser: JLineParser): SLineParser = new SCompatLineParser(parser)
 
   implicit def asJavaOptional[T](option: Option[T]): Optional[T] = option match {
     case Some(t) => Optional.of(t)
