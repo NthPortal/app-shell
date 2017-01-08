@@ -6,6 +6,7 @@ import com.nthportal.shell.parsers.WhitespaceDelineatingParser
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.util.control.NoStackTrace
 
 class InputActionTest extends SimpleSpec {
 
@@ -36,5 +37,17 @@ class InputActionTest extends SimpleSpec {
     tc.doAction(shell)
     f.isCompleted should be(true)
     Await.result(f, Duration.Zero) should contain(t.name)
+  }
+
+  it should "return a failed Future if the action throws an exception" in {
+    val shell = Shell(WhitespaceDelineatingParser, StatefulOutputProvider())
+
+    val ex = new Exception with NoStackTrace
+    val action: InputAction[Unit] = _ => throw ex
+    val f = action.future
+
+    action.doAction(shell)
+    f.isCompleted should be(true)
+    Await.result(f.failed, Duration.Zero) should be(ex)
   }
 }

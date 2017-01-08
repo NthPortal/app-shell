@@ -27,10 +27,7 @@ final class AsyncShell private(inputProvider: InputProvider)(implicit shell: She
       .map(_.doAction)
       .onComplete {
         case Success(_) => run()
-        case Failure(t) => t match {
-          case TerminationException => termination.success(Unit)
-          case t2 => termination.failure(t2)
-        }
+        case Failure(t) => t match {case TerminationException => termination.success(Unit)}
       }
   }
 
