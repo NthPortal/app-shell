@@ -8,18 +8,52 @@ import com.nthportal.shell.{OutputProvider, LineParser => SLineParser, Shell => 
 import scala.collection.JavaConverters
 
 final class Shell private(private[compat] val underlying: SShell) {
+  /**
+    * Returns the commands which this shell can execute.
+    *
+    * @return the commands which this shell can execute
+    */
   def commands: java.lang.Iterable[Command] = JavaConverters.asJavaIterable(underlying.commands.map(asJavaCommand))
 
+  /**
+    * Returns a sequence of suggested completions for the final argument
+    * of a line. Returns an empty sequence if no suggestions are available
+    * for a line.
+    *
+    * @param line the line for which to generate suggested completions
+    * @return a sequence of suggested completions for the line
+    */
   def tabComplete(line: String): util.List[String] = JavaConverters.seqAsJavaList(underlying.tabComplete(line))
 
+  /**
+    * Executes a line.
+    *
+    * @param line the line to execute
+    */
   def executeLine(line: String): Unit = underlying.executeLine(line)
 }
 
 object Shell {
+  /**
+    * Creates a shell.
+    *
+    * @param lineParser     the [[LineParser]] to use for the shell
+    * @param outputProvider the [[OutputProvider]] for the shell
+    * @param commands       the commands for the shell to execute
+    * @return a shell created with the given parameters
+    */
   def create(lineParser: LineParser, outputProvider: OutputProvider, commands: util.List[Command]): Shell = {
-    create0(lineParser, outputProvider, commands)
+    create0(asScalaLineParser(lineParser), outputProvider, commands)
   }
 
+  /**
+    * Creates a shell.
+    *
+    * @param lineParser     the [[SLineParser Scala line parser]] to use for the shell
+    * @param outputProvider the [[OutputProvider]] for the shell
+    * @param commands       the commands for the shell to execute
+    * @return a shell created with the given parameters
+    */
   def create(lineParser: com.nthportal.shell.LineParser,
              outputProvider: OutputProvider,
              commands: util.List[Command]): Shell = {
