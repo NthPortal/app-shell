@@ -18,7 +18,7 @@ class ConsoleShell {
     }
   }
 
-  private val shell = Shell(WhitespaceDelineatingParser, List(exitCommand), ConsoleOutputProvider)
+  private val shell = Shell(WhitespaceDelineatingParser, ConsoleOutputProvider, exitCommand)
 
   def readInput(): Unit = {
     println("Test Shell")

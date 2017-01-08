@@ -14,8 +14,11 @@ trait LineParser {
     * returned SHOULD NOT end with an empty string.
     *
     * @param line the line to be parsed
+    * @throws LineParseException if the line cannot be parsed
+    *                            (e.g. if it is syntactically invalid)
     * @return a list of arguments from the input line
     */
+  @throws[LineParseException]
   def parseLineForExecution(line: String): ImmutableSeq[String]
 
   /**
@@ -26,7 +29,10 @@ trait LineParser {
     * the final argument SHOULD be an empty string.
     *
     * @param line the line to be parsed
+    * @throws LineParseException if the line cannot be parsed
+    *                            (e.g. if it is syntactically invalid)
     * @return a list of arguments from the input line
     */
+  @throws[LineParseException]
   def parseLineForTabCompletion(line: String): ImmutableSeq[String]
 }

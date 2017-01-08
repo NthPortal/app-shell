@@ -2,14 +2,18 @@ package com.nthportal.shell
 
 import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand, WriteCommand}
 import com.nthportal.shell.parsers.WhitespaceDelineatingParser
-import org.scalatest.{FlatSpec, Matchers}
 
-class ShellTest extends FlatSpec with Matchers {
+class ShellTest extends SimpleSpec {
   private val testCommand = new TestCommand
   private val outputProvider = new StatefulOutputProvider
-  private val shell = Shell(WhitespaceDelineatingParser, List(testCommand, WriteCommand), outputProvider)
+  private val shell = Shell(WhitespaceDelineatingParser, outputProvider, testCommand, WriteCommand)
 
   behavior of "Shell"
+
+  it should "produce equivalent shells with both factory methods" in {
+    val shell2 = Shell(WhitespaceDelineatingParser, outputProvider, List(testCommand, WriteCommand))
+    shell2 shouldEqual shell
+  }
 
   it should "include commands with which it was constructed" in {
     shell.commands should (contain(testCommand) and contain(WriteCommand))
