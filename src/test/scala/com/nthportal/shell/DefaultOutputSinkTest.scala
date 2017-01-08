@@ -1,9 +1,8 @@
 package com.nthportal.shell
 
 import com.nthportal.shell.impl.StatefulOutputProvider
-import org.scalatest.{FlatSpec, Matchers}
 
-class DefaultOutputSinkTest extends FlatSpec with Matchers {
+class DefaultOutputSinkTest extends SimpleSpec {
   behavior of "Default OutputSink"
 
   it should "write the same text for both `write` implementations" in {

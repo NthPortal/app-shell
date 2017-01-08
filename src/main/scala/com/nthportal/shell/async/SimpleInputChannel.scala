@@ -1,46 +1,56 @@
 package com.nthportal.shell.async
 
-import akka.agent.Agent
+import java.util.concurrent.atomic.AtomicReference
+
 import com.nthportal.shell.async.SimpleInputChannel.ActionQueue
 
 import scala.collection.immutable.Queue
-import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.concurrent.{Future, Promise}
 
 /**
   * A simple [[InputChannel]] implementation.
-  *
-  * This implementation uses an [[Agent]] which executes in the given
-  * implicit [[ExecutionContext]].
-  *
-  * @param ec the context in which to execute this
   */
-final class SimpleInputChannel(implicit ec: ExecutionContext = ExecutionContext.global) extends InputChannel {
-  private val agent = Agent(ActionQueue(Queue.empty, Queue.empty))
+final class SimpleInputChannel extends InputChannel {
+  private val atomic = new AtomicReference(ActionQueue(Queue.empty, Queue.empty))
 
+  /**
+    * @inheritdoc
+    */
   override def sendAction[T](action: InputAction[T]): Future[T] = {
-    agent.send(queue => {
-      val promised = queue.promisedActions
-      if (promised.nonEmpty) {
-        promised.head.success(action)
-        ActionQueue(promised.tail, queue.waitingActions)
-      } else ActionQueue(promised, queue.waitingActions :+ action)
+    val queue = atomic.getAndUpdate(q => {
+      if (q.promises.nonEmpty) q.copy(promises = q.promises.tail)
+      else q.copy(actions = q.actions :+ action)
     })
+
+    if (queue.promises.nonEmpty) {
+      queue.promises.head.success(action)
+    }
+
     action.future
   }
 
+  /**
+    * @inheritdoc
+    */
   override def nextAction: Future[InputAction[_]] = {
     val p = Promise[InputAction[_]]
-    agent.send(queue => {
-      val waiting = queue.waitingActions
-      if (waiting.nonEmpty) {
-        p.success(waiting.head)
-        ActionQueue(queue.promisedActions, waiting.tail)
-      } else ActionQueue(queue.promisedActions :+ p, waiting)
+
+    val queue = atomic.getAndUpdate(q => {
+      if (q.actions.nonEmpty) q.copy(actions = q.actions.tail)
+      else q.copy(promises = q.promises :+ p)
     })
+
+    if (queue.actions.nonEmpty) {
+      p.success(queue.actions.head)
+    }
+
     p.future
   }
 }
 
-private object SimpleInputChannel {
-  case class ActionQueue(promisedActions: Queue[Promise[InputAction[_]]], waitingActions: Queue[InputAction[_]])
+object SimpleInputChannel {
+  def apply(): SimpleInputChannel = new SimpleInputChannel()
+
+  private case class ActionQueue(promises: Queue[Promise[InputAction[_]]], actions: Queue[InputAction[_]])
+
 }

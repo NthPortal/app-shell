@@ -2,9 +2,8 @@ package com.nthportal.shell
 
 import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand, WriteCommand}
 import com.nthportal.shell.parsers.WhitespaceDelineatingParser
-import org.scalatest.{FlatSpec, Matchers}
 
-class ShellTest extends FlatSpec with Matchers {
+class ShellTest extends SimpleSpec {
   private val testCommand = new TestCommand
   private val outputProvider = new StatefulOutputProvider
   private val shell = Shell(WhitespaceDelineatingParser, outputProvider, testCommand, WriteCommand)

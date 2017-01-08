@@ -2,9 +2,8 @@ package com.nthportal.shell
 package internal
 
 import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand}
-import org.scalatest.{FlatSpec, Matchers}
 
-class HelpCommandTest extends FlatSpec with Matchers {
+class HelpCommandTest extends SimpleSpec {
   behavior of "HelpCommand"
 
   it should "have the correct name" in {

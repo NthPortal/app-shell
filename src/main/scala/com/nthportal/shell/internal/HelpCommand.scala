@@ -36,6 +36,11 @@ private[internal] case class HelpCommand(shellCommands: ImmutableSeq[Command]) e
     */
   override def help(args: ImmutableSeq[String]): Option[String] = Some(usage)
 
+  override def equals(obj: Any): Boolean = obj match {
+    case that: HelpCommand => commands.filterNot(_ eq this) == that.commands.filterNot(_ eq that)
+    case _ => false
+  }
+
   private def getHelp(args: ImmutableSeq[String]): String = {
     if (args.isEmpty) helpMessage
     else getHelpForCommand(args.head, args.tail)

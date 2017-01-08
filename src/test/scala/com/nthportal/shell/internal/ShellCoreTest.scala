@@ -2,9 +2,8 @@ package com.nthportal.shell
 package internal
 
 import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand}
-import org.scalatest.{FlatSpec, Matchers}
 
-class ShellCoreTest extends FlatSpec with Matchers {
+class ShellCoreTest extends SimpleSpec {
   behavior of "ShellCore"
 
   it should "validate commands properly" in {

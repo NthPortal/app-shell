@@ -1,8 +1,8 @@
 package com.nthportal.example.shell.console
 
-import org.scalatest.{FlatSpec, Matchers}
+import com.nthportal.shell.SimpleSpec
 
-class ConsoleShellTest extends FlatSpec with Matchers {
+class ConsoleShellTest extends SimpleSpec {
   behavior of "ConsoleShell"
 
   it should "be constructed (without issue)" in {

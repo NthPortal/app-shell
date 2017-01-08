@@ -1,9 +1,9 @@
-package com.nthportal.shell.util
+package com.nthportal.shell
+package util
 
 import com.nthportal.shell.impl.TestCommand
-import org.scalatest.{FlatSpec, Matchers}
 
-class CommandTabCompleterTest extends FlatSpec with Matchers {
+class CommandTabCompleterTest extends SimpleSpec {
   behavior of "CommandTabCompleter"
 
   it should "return an empty seq when given an empty list of arguments" in {
