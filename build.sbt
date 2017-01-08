@@ -9,7 +9,9 @@ lazy val macros = (project in file("macros"))
   .settings(shared)
   .settings(
     name := "app-shell-macros",
-    libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
+    libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    publish := {},
+    publishLocal := {}
   )
 
 lazy val core = (project in file("core"))
