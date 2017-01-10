@@ -6,7 +6,7 @@ import java.util
 import com.nthportal.shell.compat.{Command => JCommand, LineParser => JLineParser}
 import com.nthportal.shell.{Command => SCommand, LineParser => SLineParser}
 
-import scala.collection.JavaConverters
+import scala.collection.JavaConverters._
 
 /**
   * Converters between classes in Java and Scala APIs.
@@ -49,7 +49,5 @@ object Converters {
     * @param list the Java list to convert
     * @return a Scala immutable sequence
     */
-  def listToScalaImmutableSeq[T](list: util.List[T]): ImmutableSeq[T] = {
-    JavaConverters.asScalaBuffer(list).to[ImmutableSeq]
-  }
+  def listToScalaImmutableSeq[T](list: util.List[T]): ImmutableSeq[T] = asScalaBuffer(list).to[ImmutableSeq]
 }
