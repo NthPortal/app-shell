@@ -1,6 +1,7 @@
 package com.nthportal.shell
 package async
 
+import com.nthportal.shell.async.AsyncShell.CancellableInputProvider
 import com.nthportal.shell.impl.NoOpOutputProvider
 import com.nthportal.shell.parsers.WhitespaceDelineatingParser
 
@@ -29,5 +30,14 @@ class AsyncShellTest extends SimpleSpec {
     shell.terminate()
 
     an[IllegalStateException] should be thrownBy {shell.terminate()}
+  }
+
+  behavior of classOf[AsyncShell.CancellableInputProvider].getSimpleName
+
+  it should "not allow `nextAction` to be invoked if the result of the previous invocation is not completed" in {
+    val cip = new CancellableInputProvider(SimpleInputChannel())
+    cip.nextAction
+
+    an[IllegalStateException] should be thrownBy {cip.nextAction}
   }
 }

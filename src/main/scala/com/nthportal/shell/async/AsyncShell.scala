@@ -72,7 +72,7 @@ object AsyncShell {
     * NOTE: Implementation requires that [[nextAction]] is not invoked again before the
     * result of the previous invocation has completed.
     */
-  private class CancellableInputProvider(inputProvider: InputProvider) extends InputProvider {
+  private[async] class CancellableInputProvider(inputProvider: InputProvider) extends InputProvider {
     private val tuple: AtomicReference[(Boolean, Promise[InputAction[_]])] =
       new AtomicReference((false, Promise.successful[InputAction[_]](_ => Unit)))
 
