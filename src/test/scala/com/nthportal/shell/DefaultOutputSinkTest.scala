@@ -3,7 +3,7 @@ package com.nthportal.shell
 import com.nthportal.shell.impl.StatefulOutputProvider
 
 class DefaultOutputSinkTest extends SimpleSpec {
-  behavior of "Default OutputSink"
+  behavior of s"Default ${classOf[OutputSink].getSimpleName}"
 
   it should "write the same text for both `write` implementations" in {
     val list = List("some", "words")

@@ -9,7 +9,7 @@ import scala.concurrent.duration.Duration
 
 class AsyncShellTest extends SimpleSpec {
 
-  behavior of "AsyncShellTest"
+  behavior of classOf[AsyncShell].getSimpleName
 
   it should "execute inputs properly" in {
     val ic = SimpleInputChannel()
