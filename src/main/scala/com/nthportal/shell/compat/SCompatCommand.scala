@@ -22,4 +22,9 @@ private[compat] class SCompatCommand(val command: JCommand) extends SCommand {
   override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = {
     command.execute(seqAsJavaList(args), sink)
   }
+
+  override def equals(obj: Any): Boolean = obj match {
+    case that: SCompatCommand => command == that.command
+    case _ => false
+  }
 }

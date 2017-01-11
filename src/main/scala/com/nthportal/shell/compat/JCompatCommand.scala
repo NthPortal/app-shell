@@ -25,4 +25,9 @@ private[compat] class JCompatCommand(val command: SCommand) extends JCommand {
   override def execute(args: util.List[String], sink: OutputSink): Unit = {
     command.execute(listToScalaImmutableSeq(args))(sink)
   }
+
+  override def equals(obj: Any): Boolean = obj match {
+    case that: JCompatCommand => command == that.command
+    case _ => false
+  }
 }

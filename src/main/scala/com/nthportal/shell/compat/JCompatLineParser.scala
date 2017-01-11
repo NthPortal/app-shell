@@ -16,4 +16,9 @@ private[compat] class JCompatLineParser(val parser: SLineParser) extends JLinePa
   override def parseLineForTabCompletion(line: String): util.List[String] = {
     JavaConverters.seqAsJavaList(parser.parseLineForTabCompletion(line))
   }
+
+  override def equals(obj: Any): Boolean = obj match {
+    case that: JCompatLineParser => parser == that.parser
+    case _ => false
+  }
 }

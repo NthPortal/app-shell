@@ -38,6 +38,11 @@ final class Shell private(private[compat] val underlying: SShell) {
     * @param line the line to execute
     */
   def executeLine(line: String): Unit = underlying.executeLine(line)
+
+  override def equals(obj: Any): Boolean = obj match {
+    case that: Shell => underlying == that.underlying
+    case _ => false
+  }
 }
 
 object Shell {

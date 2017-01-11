@@ -1,22 +1,34 @@
 package com.nthportal.shell
+package compat
 
-import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand, WriteCommand}
-import com.nthportal.shell.parsers.WhitespaceDelineatingParser
+import java.util
+
+import com.google.common.collect.Lists
+import com.nthportal.shell.compat.impl.{TestCommand, TestParser, WriteCommand}
+import com.nthportal.shell.impl.StatefulOutputProvider
+import Converters._
 
 class ShellTest extends SimpleSpec {
   private val testCommand = TestCommand()
   private val outputProvider = StatefulOutputProvider()
-  private val shell = Shell(WhitespaceDelineatingParser, outputProvider, testCommand, WriteCommand)
+  private val commands = util.Arrays.asList(testCommand, WriteCommand)
+  private val shell = Shell.create(TestParser, outputProvider, commands)
 
   behavior of classOf[Shell].getSimpleName
 
   it should "produce equivalent shells with both factory methods" in {
-    val shell2 = Shell(WhitespaceDelineatingParser, outputProvider, List(testCommand, WriteCommand))
+    val shell2 = Shell.create(asScalaLineParser(TestParser), outputProvider, commands)
+    shell2.commands shouldEqual shell.commands
+    shell2.lineParser shouldEqual shell.lineParser
     shell2 shouldEqual shell
   }
 
+  it should "check equality properly" in {
+    shell should not equal "not a shell"
+  }
+
   it should "include commands with which it was constructed" in {
-    shell.commands should (contain(testCommand) and contain(WriteCommand))
+    iterableToList(shell.commands) should (contain(testCommand) and contain(WriteCommand))
   }
 
   it should "execute a command" in {
@@ -39,4 +51,6 @@ class ShellTest extends SimpleSpec {
     shell.tabComplete(testCommand.name + " other text") should not contain testCommand.name
     shell.tabComplete("not-a-command with args") shouldBe empty
   }
+
+  private def iterableToList[T](iterable: java.lang.Iterable[T]): util.List[T] = Lists.newArrayList(iterable)
 }

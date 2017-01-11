@@ -1,17 +1,20 @@
 package com.nthportal.shell.compat
 package impl
+
 import java.util
 import java.util.Optional
 import java.util.stream.Collectors
 
 import com.nthportal.shell.OutputSink
 
-class TestCommand(override val name: String) extends Command {
+class TestCommand(_name: String) extends Command {
   def this() = this(TestCommand.name)
 
   private var _executed: Boolean = false
 
   def executed: Boolean = _executed
+
+  override def name: String = _name
 
   override def execute(args: util.List[String], sink: OutputSink): Unit = _executed = true
 
