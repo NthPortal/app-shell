@@ -11,7 +11,7 @@ import com.nthportal.shell.{Command => SCommand}
 import scala.collection.JavaConverters._
 import scala.compat.java8.OptionConverters._
 
-private[compat] class JCompatCommand(val command: SCommand) extends JCommand {
+private[compat] case class JCompatCommand(command: SCommand) extends JCommand {
   override def name(): String = command.name
 
   override def description(): Optional[String] = toJava(command.description)
@@ -24,10 +24,5 @@ private[compat] class JCompatCommand(val command: SCommand) extends JCommand {
 
   override def execute(args: util.List[String], sink: OutputSink): Unit = {
     command.execute(listToScalaImmutableSeq(args))(sink)
-  }
-
-  override def equals(obj: Any): Boolean = obj match {
-    case that: JCompatCommand => command == that.command
-    case _ => false
   }
 }
