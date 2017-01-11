@@ -7,7 +7,7 @@ import com.nthportal.shell.{OutputProvider, LineParser => SLineParser, Shell => 
 
 import scala.collection.JavaConverters
 
-final class Shell private(private[compat] val underlying: SShell) {
+final class Shell private(private[shell] val underlying: SShell) {
   /**
     * Returns the commands which this shell can execute.
     *

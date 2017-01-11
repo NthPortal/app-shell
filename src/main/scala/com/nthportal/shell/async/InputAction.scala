@@ -31,14 +31,10 @@ trait InputAction[T] {
   /**
     * Returns the result of an action performed with a [[Shell]].
     *
-    * Note: This method should NOT be called from within [[AsyncShell]];
-    * use [[doAction]] instead. (It is only accessible outside of the local
-    * scope for use in Java-compatible classes.)
-    *
     * @param shell the shell with which to perform the action
     * @return the result of the action
     */
-  private[shell] def action(shell: Shell): T
+  private[InputAction] def action(shell: Shell): T
 }
 
 object InputAction {

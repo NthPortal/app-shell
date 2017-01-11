@@ -1,4 +1,4 @@
-package com.nthportal.shell.compat.async;
+package com.nthportal.shell.async.compat;
 
 import com.nthportal.shell.compat.Shell;
 import scala.compat.java8.FutureConverters;
@@ -9,7 +9,7 @@ import java.util.concurrent.CompletionStage;
 /**
  * An asynchronous shell. It processes commands and tab-completions asynchronously.
  */
-public interface AsyncShell {
+public interface AsyncShell extends InputActionCreator {
     /**
      * Terminates this asynchronous shell so that it will no longer process inputs.
      * It cannot be terminated more than once.

@@ -1,4 +1,4 @@
-package com.nthportal.shell.compat.async;
+package com.nthportal.shell.async.compat;
 
 import java.util.concurrent.CompletionStage;
 
