@@ -66,7 +66,7 @@ object AsyncShell {
     ExecutionContext.fromExecutorService(Executors.newSingleThreadExecutor())
   }
 
-  private object TerminationException extends Exception("Shell terminated properly") with NoStackTrace
+  private[async] object TerminationException extends Exception("Shell terminated properly") with NoStackTrace
 
   /**
     * NOTE: Implementation requires that [[nextAction]] is not invoked again before the

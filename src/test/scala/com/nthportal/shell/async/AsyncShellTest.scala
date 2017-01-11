@@ -40,4 +40,13 @@ class AsyncShellTest extends SimpleSpec {
 
     an[IllegalStateException] should be thrownBy {cip.nextAction}
   }
+
+  it should "fail `nextAction` if it has been cancelled" in {
+    val cip = new CancellableInputProvider(SimpleInputChannel())
+    cip.tryCancel()
+
+    val f = cip.nextAction
+    f.isCompleted should be(true)
+    Await.result(f.failed, Duration.Zero) should be(AsyncShell.TerminationException)
+  }
 }
