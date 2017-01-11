@@ -7,6 +7,7 @@ import java.util.Collections
 import com.nthportal.shell.compat.Converters._
 import com.nthportal.shell.compat.impl.{TestParser, TestCommand => JTestCommand}
 import com.nthportal.shell.impl.{NoOpOutputProvider, TestCommand => STestCommand}
+import com.nthportal.shell.parsers.WhitespaceDelineatingParser
 
 import scala.compat.java8.OptionConverters._
 
@@ -16,6 +17,24 @@ class ConvertersTest extends SimpleSpec {
   it should "convert a Java LineParser to a Scala LineParser properly" in {
     val jlp = TestParser
     val slp = asScalaLineParser(jlp)
+    asJavaLineParser(slp) should be theSameInstanceAs jlp
+
+    // Execution
+    val line = "a line to be executed "
+    val jExecRes = jlp.parseLineForExecution(line)
+    val sExecRes = slp.parseLineForExecution(line)
+    testEqualSeq(sExecRes, jExecRes)
+
+    // Tab completion
+    val jTabRes = jlp.parseLineForTabCompletion(line)
+    val sTabRes = slp.parseLineForTabCompletion(line)
+    testEqualSeq(sTabRes, jTabRes)
+  }
+
+  it should "convert a Scala LineParser to a Java LineParser properly" in {
+    val slp = WhitespaceDelineatingParser
+    val jlp = asJavaLineParser(slp)
+    asScalaLineParser(jlp) should be theSameInstanceAs slp
 
     // Execution
     val line = "a line to be executed "
