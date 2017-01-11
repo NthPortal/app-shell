@@ -13,4 +13,9 @@ private[compat] class SCompatLineParser(val parser: JLineParser) extends SLinePa
   override def parseLineForTabCompletion(line: String): ImmutableSeq[String] = {
     listToScalaImmutableSeq(parser.parseLineForTabCompletion(line))
   }
+
+  override def equals(obj: Any): Boolean = obj match {
+    case that: SCompatLineParser => parser == that.parser
+    case _ => false
+  }
 }
