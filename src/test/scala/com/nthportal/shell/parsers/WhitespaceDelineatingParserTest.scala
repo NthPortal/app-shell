@@ -2,7 +2,7 @@ package com.nthportal.shell
 package parsers
 
 class WhitespaceDelineatingParserTest extends SimpleSpec {
-  behavior of "WhitespaceDelineatingParser"
+  behavior of nameOf(WhitespaceDelineatingParser)
 
   it should "parse lines correctly for execution" in {
     WhitespaceDelineatingParser.parseLineForExecution("a line") should have length 2

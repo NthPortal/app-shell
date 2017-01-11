@@ -4,7 +4,7 @@ package internal
 import com.nthportal.shell.impl.{StatefulOutputProvider, TestCommand}
 
 class ShellCoreTest extends SimpleSpec {
-  behavior of "ShellCore"
+  behavior of classOf[ShellCore].getSimpleName
 
   it should "validate commands properly" in {
     an[IllegalArgumentException] should be thrownBy {ShellCore(TestCommand(ShellCore.helpCommandName))}

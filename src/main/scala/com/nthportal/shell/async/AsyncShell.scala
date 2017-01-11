@@ -66,13 +66,13 @@ object AsyncShell {
     ExecutionContext.fromExecutorService(Executors.newSingleThreadExecutor())
   }
 
-  private object TerminationException extends Exception("Shell terminated properly") with NoStackTrace
+  private[async] object TerminationException extends Exception("Shell terminated properly") with NoStackTrace
 
   /**
     * NOTE: Implementation requires that [[nextAction]] is not invoked again before the
     * result of the previous invocation has completed.
     */
-  private class CancellableInputProvider(inputProvider: InputProvider) extends InputProvider {
+  private[async] class CancellableInputProvider(inputProvider: InputProvider) extends InputProvider {
     private val tuple: AtomicReference[(Boolean, Promise[InputAction[_]])] =
       new AtomicReference((false, Promise.successful[InputAction[_]](_ => Unit)))
 
