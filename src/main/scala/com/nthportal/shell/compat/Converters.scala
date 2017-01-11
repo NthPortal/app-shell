@@ -13,12 +13,26 @@ import scala.collection.JavaConverters._
   */
 object Converters {
   /**
+    * Converts a [[SLineParser Scala line parser]] to a [[JLineParser Java line parser]].
+    *
+    * @param parser the Scala line parser to convert
+    * @return a Java line parser
+    */
+  def asJavaLineParser(parser: SLineParser): JLineParser = parser match {
+    case p: SCompatLineParser => p.parser
+    case _ => new JCompatLineParser(parser)
+  }
+
+  /**
     * Converts a [[JLineParser Java line parser]] to a [[SLineParser Scala line parser]].
     *
     * @param parser the Java line parser to convert
     * @return a Scala line parser
     */
-  def asScalaLineParser(parser: JLineParser): SLineParser = new SCompatLineParser(parser)
+  def asScalaLineParser(parser: JLineParser): SLineParser = parser match {
+    case p: JCompatLineParser => p.parser
+    case _ => new SCompatLineParser(parser)
+  }
 
   /**
     * Converts a [[SCommand Scala command]] to a [[JCommand Java command]].

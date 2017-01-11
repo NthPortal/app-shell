@@ -16,6 +16,13 @@ final class Shell private(private[compat] val underlying: SShell) {
   def commands: java.lang.Iterable[Command] = JavaConverters.asJavaIterable(underlying.commands.map(asJavaCommand))
 
   /**
+    * Returns the [[LineParser]] which this shell uses to parse lines.
+    *
+    * @return the LineParser which this shell uses to parse lines
+    */
+  def lineParser: LineParser = asJavaLineParser(underlying.lineParser)
+
+  /**
     * Returns a sequence of suggested completions for the final argument
     * of a line. Returns an empty sequence if no suggestions are available
     * for a line.
