@@ -14,7 +14,7 @@ class ShellTest extends SimpleSpec {
   private val commands = util.Arrays.asList(testCommand, WriteCommand)
   private val shell = Shell.create(TestParser, outputProvider, commands)
 
-  behavior of classOf[Shell].getSimpleName
+  behavior of s"${classOf[Shell].getSimpleName} (Java)"
 
   it should "produce equivalent shells with both factory methods" in {
     val shell2 = Shell.create(asScalaLineParser(TestParser), outputProvider, commands)
