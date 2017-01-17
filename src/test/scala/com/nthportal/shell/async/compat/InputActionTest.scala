@@ -22,7 +22,7 @@ class InputActionTest extends SimpleSpec {
   it should "execute an execution properly" in {
     val os = StatefulOutputProvider()
     val shell = Shell.create(WhitespaceDelineatingParser, os, Collections.emptyList[Command]())
-    val iac = inputActionCreator(shell)
+    val iac = BasicInputActionCreator(shell)
 
     val ex = iac.execution("not-a-command")
     val f = ex.future
@@ -37,7 +37,7 @@ class InputActionTest extends SimpleSpec {
   it should "execute a tab-completion properly" in {
     val t = TestCommand()
     val shell = Shell.create(WhitespaceDelineatingParser, StatefulOutputProvider(), util.Arrays.asList[Command](t))
-    val iac = inputActionCreator(shell)
+    val iac = BasicInputActionCreator(shell)
 
     val tc = iac.tabCompletion(t.name)
     val f = tc.future
@@ -50,7 +50,7 @@ class InputActionTest extends SimpleSpec {
 
   it should "return a failed Future if the action throws an exception" in {
     val shell = Shell.create(WhitespaceDelineatingParser, StatefulOutputProvider(), Collections.emptyList[Command]())
-    val iac = inputActionCreator(shell)
+    val iac = BasicInputActionCreator(shell)
 
     val ex = new Exception with NoStackTrace
     val action: InputAction[Unit] = iac.inputAction(_ => throw ex)
@@ -59,11 +59,5 @@ class InputActionTest extends SimpleSpec {
     action.doAction(shell)
     f.isCompleted should be(true)
     Await.result(f.failed, Duration.Zero) should be(ex)
-  }
-
-  private def inputActionCreator(shell: Shell): InputActionCreator = new InputActionCreator {
-    implicit def mapping = Map(shell.underlying -> shell)
-
-    override def inputAction[T](action: Function[Shell, T]) = new InputAction[T](action(_))
   }
 }
