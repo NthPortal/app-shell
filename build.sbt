@@ -1,14 +1,44 @@
 organization := "com.nthportal"
 name := "app-shell"
-version := "1.0.0-SNAPSHOT"
+description := "A framework for creating shells/CLIs for an application."
+
+val rawVersion = "1.0.0"
+isSnapshot := true
+version := rawVersion + {if (isSnapshot.value) "-SNAPSHOT" else ""}
 
 scalaVersion := "2.12.1"
 
-coverageEnabled := true
-jacoco.settings
+locally {jacoco.settings}
 
 libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "20.0",
   "org.scala-lang.modules" %% "scala-java8-compat" % "0.8.0",
+  "com.nthportal" %% "future-queue" % "1.0.0",
   "org.scalatest" %% "scalatest" % "3.0.1" % Test
 )
+
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+
+publishMavenStyle := true
+licenses := Seq("The Apache License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
+homepage := Some(url("https://github.com/NthPortal/future-queue"))
+
+pomExtra :=
+  <scm>
+    <url>https://github.com/NthPortal/app-shell</url>
+    <connection>scm:git:git@github.com:NthPortal/app-shell.git</connection>
+    <developerConnection>scm:git:git@github.com:NthPortal/app-shell.git</developerConnection>
+  </scm>
+    <developers>
+      <developer>
+        <id>NthPortal</id>
+        <name>NthPortal</name>
+        <url>https://github.com/NthPortal</url>
+      </developer>
+    </developers>
