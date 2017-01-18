@@ -4,8 +4,8 @@ package impl
 import java.util
 
 object TestParser extends LineParser {
-  val split = "\\s+"
-  val end = "^.*" + split + "$"
+  private val split = "\\s+"
+  private val end = "^.*" + split + "$"
 
   override def parseLineForExecution(line: String): util.List[String] = {
     val list = new util.ArrayList[String]()

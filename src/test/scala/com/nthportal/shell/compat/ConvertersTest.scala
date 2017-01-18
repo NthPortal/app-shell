@@ -19,7 +19,6 @@ class ConvertersTest extends SimpleSpec {
     val slp = asScalaLineParser(jlp)
     asJavaLineParser(slp) should be theSameInstanceAs jlp
     asScalaLineParser(jlp) shouldEqual slp
-    slp should not equal jlp
 
     // Execution
     val line = "a line to be executed "
@@ -38,7 +37,6 @@ class ConvertersTest extends SimpleSpec {
     val jlp = asJavaLineParser(slp)
     asScalaLineParser(jlp) should be theSameInstanceAs slp
     asJavaLineParser(slp) shouldEqual jlp
-    jlp should not equal slp
 
     // Execution
     val line = "a line to be executed "
@@ -57,7 +55,6 @@ class ConvertersTest extends SimpleSpec {
     val sc = asScalaCommand(jc)
     asJavaCommand(sc) should be theSameInstanceAs jc
     asScalaCommand(jc) shouldEqual sc
-    sc should not equal jc
 
     sc.name should be(jc.name)
     sc.description shouldEqual toScala(jc.description())
@@ -81,7 +78,6 @@ class ConvertersTest extends SimpleSpec {
     val jc = asJavaCommand(sc)
     asScalaCommand(jc) should be theSameInstanceAs sc
     asJavaCommand(sc) shouldEqual jc
-    jc should not equal sc
 
     sc.name should be(jc.name)
     sc.description shouldEqual toScala(jc.description())
