@@ -14,5 +14,6 @@ class DefaultCommandTest extends SimpleSpec {
     c.help(Nil) should be(None)
     c.help(List(c.name)) should be(None)
     c.help(List("a", "list", "of", "sorts")) should be(None)
+    c.tabComplete(List("a", "list", "of", "sorts")) shouldBe empty
   }
 }

@@ -8,17 +8,12 @@ import com.nthportal.shell.{LineParser => SLineParser}
 
 import scala.collection.JavaConverters
 
-private[compat] class JCompatLineParser(val parser: SLineParser) extends JLineParser {
+private[compat] case class JCompatLineParser(parser: SLineParser) extends JLineParser {
   override def parseLineForExecution(line: String): util.List[String] = {
     JavaConverters.seqAsJavaList(parser.parseLineForExecution(line))
   }
 
   override def parseLineForTabCompletion(line: String): util.List[String] = {
     JavaConverters.seqAsJavaList(parser.parseLineForTabCompletion(line))
-  }
-
-  override def equals(obj: Any): Boolean = obj match {
-    case that: JCompatLineParser => parser == that.parser
-    case _ => false
   }
 }

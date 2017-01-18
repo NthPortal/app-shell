@@ -19,8 +19,8 @@ object Converters {
     * @return a Java line parser
     */
   def asJavaLineParser(parser: SLineParser): JLineParser = parser match {
-    case p: SCompatLineParser => p.parser
-    case _ => new JCompatLineParser(parser)
+    case SCompatLineParser(p) => p
+    case _ => JCompatLineParser(parser)
   }
 
   /**
@@ -30,8 +30,8 @@ object Converters {
     * @return a Scala line parser
     */
   def asScalaLineParser(parser: JLineParser): SLineParser = parser match {
-    case p: JCompatLineParser => p.parser
-    case _ => new SCompatLineParser(parser)
+    case JCompatLineParser(p) => p
+    case _ => SCompatLineParser(parser)
   }
 
   /**
@@ -41,8 +41,8 @@ object Converters {
     * @return a Java command
     */
   def asJavaCommand(command: SCommand): JCommand = command match {
-    case c: SCompatCommand => c.command
-    case _ => new JCompatCommand(command)
+    case SCompatCommand(c) => c
+    case _ => JCompatCommand(command)
   }
 
   /**
@@ -52,8 +52,8 @@ object Converters {
     * @return a Scala command
     */
   def asScalaCommand(command: JCommand): SCommand = command match {
-    case c: JCompatCommand => c.command
-    case _ => new SCompatCommand(command)
+    case JCompatCommand(c) => c
+    case _ => SCompatCommand(command)
   }
 
   /**
