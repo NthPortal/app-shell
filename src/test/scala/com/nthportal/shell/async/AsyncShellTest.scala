@@ -19,7 +19,7 @@ class AsyncShellTest extends SimpleSpec {
     val tc = InputAction.tabCompletion("")
     ic.sendAction(tc)
     val terminated = shell.terminate()
-    Await.result(terminated, Duration.Inf)
+    Await.ready(terminated, Duration.Inf)
 
     tc.future.isCompleted should be(true)
   }

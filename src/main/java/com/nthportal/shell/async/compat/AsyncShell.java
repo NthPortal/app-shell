@@ -42,6 +42,6 @@ public interface AsyncShell extends InputActionCreator {
      * @return an asynchronous shell created with the given parameters
      */
     static AsyncShell create(InputProvider inputProvider, Shell shell) {
-        return AsyncShellImpl.apply(inputProvider, shell);
+        return new AsyncShellImpl(inputProvider, shell);
     }
 }

@@ -27,7 +27,7 @@ publishTo := {
 
 publishMavenStyle := true
 licenses := Seq("The Apache License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
-homepage := Some(url("https://github.com/NthPortal/future-queue"))
+homepage := Some(url("https://github.com/NthPortal/app-shell"))
 
 pomExtra :=
   <scm>

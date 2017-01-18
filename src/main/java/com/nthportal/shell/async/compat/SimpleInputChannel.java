@@ -15,7 +15,7 @@ public final class SimpleInputChannel implements InputChannel {
     @Override
     public <T> CompletionStage<T> sendAction(InputAction<T> action) {
         queue.enqueue(action);
-        return toJava(action.future());
+        return action.completionStage();
     }
 
     @Override
