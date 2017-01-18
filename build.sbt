@@ -2,8 +2,8 @@ organization := "com.nthportal"
 name := "app-shell"
 description := "A framework for creating shells/CLIs for an application."
 
-val rawVersion = "1.0.0"
-isSnapshot := false
+val rawVersion = "1.1.0"
+isSnapshot := true
 version := rawVersion + {if (isSnapshot.value) "-SNAPSHOT" else ""}
 
 scalaVersion := "2.12.1"
