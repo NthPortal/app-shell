@@ -67,17 +67,39 @@ object Shell {
     Impl(ShellCore(commands: _*), lineParser, outputProvider)
   }
 
-  private case class Impl(core: ShellCore,
-                          lineParser: LineParser,
-                          outputProvider: OutputProvider) extends Shell {
-    implicit private def sink: OutputSink = outputProvider
+  private abstract class Base(core: ShellCore, outputProvider: OutputProvider) extends Shell {
+    implicit protected def sink: OutputSink = outputProvider
 
     override def commands: ImmutableIterable[Command] = core.commands
+  }
 
+  private case class Impl(core: ShellCore,
+                          lineParser: LineParser,
+                          outputProvider: OutputProvider) extends Base(core, outputProvider) {
     override def tabComplete(line: String): ImmutableSeq[String] = {
       core.tabComplete(lineParser.parseLineForTabCompletion(line))
     }
 
     override def executeLine(line: String): Unit = core.execute(lineParser.parseLineForExecution(line))
   }
+
+  private case class PreProcessImpl(core: ShellCore,
+                                    lineParser: LineParser,
+                                    outputProvider: OutputProvider,
+                                    preProcessors: ImmutableSeq[LinePreProcessor]) extends Base(core, outputProvider) {
+    private def preProcessLine(line: ImmutableSeq[String]): ImmutableSeq[String] = {
+      preProcessors.foldLeft(line) { (seq, p) => p(seq, lineParser.parseLineForExecution) }
+    }
+
+    override def tabComplete(line: String): ImmutableSeq[String] = {
+      val processed = preProcessLine(lineParser.parseLineForTabCompletion(line))
+      core.tabComplete(processed)
+    }
+
+    override def executeLine(line: String): Unit = {
+      val processed = preProcessLine(lineParser.parseLineForExecution(line))
+      core.execute(processed)
+    }
+  }
+
 }
