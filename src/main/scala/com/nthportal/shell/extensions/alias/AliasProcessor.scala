@@ -3,6 +3,14 @@ package extensions.alias
 
 import scala.annotation.tailrec
 
+/**
+  * A [[LinePreProcessor]] for [[Alias aliases]].
+  *
+  * If the first argument of an input line is [[Alias.name the name of an alias]],
+  * it replaces that argument with [[Alias.expansion the alias's expansion]].
+  *
+  * @param aliases the aliases with which to process the line
+  */
 final class AliasProcessor private(aliases: Map[String, Alias]) extends LinePreProcessor {
   override def apply(parsedLine: ImmutableSeq[String],
                      lineParser: String => ImmutableSeq[String]): ImmutableSeq[String] = {
@@ -28,11 +36,25 @@ final class AliasProcessor private(aliases: Map[String, Alias]) extends LinePreP
 }
 
 object AliasProcessor {
+  /**
+    * Creates an [[AliasProcessor]] from a sequence of [[Alias aliases]].
+    *
+    * @param aliases the aliases with which to process the line
+    * @return an AliasProcessor with the specified aliases
+    */
   def apply(aliases: ImmutableSeq[Alias]): AliasProcessor = {
     val aliasMap = aliases.map(a => (a.name, a)).toMap
     validateAliases(aliasMap)
     new AliasProcessor(aliasMap)
   }
+
+  /**
+    * Creates an [[AliasProcessor]] from a sequence of [[Alias aliases]].
+    *
+    * @param aliases the aliases with which to process the line
+    * @return an AliasProcessor with the specified aliases
+    */
+  def apply(aliases: Alias*): AliasProcessor = apply(aliases.to[ImmutableSeq])
 
   private def validateAliases(aliases: Map[String, Alias]): Unit = {
     val duplicates = aliases.keys
