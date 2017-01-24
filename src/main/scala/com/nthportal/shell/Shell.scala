@@ -50,7 +50,7 @@ object Shell {
   def apply(lineParser: LineParser,
             outputProvider: OutputProvider,
             commands: ImmutableSeq[Command]): Shell = {
-    Impl(ShellCore(commands), lineParser, outputProvider)
+    Impl(ShellCore(commands), lineParser, outputProvider, Nil)
   }
 
   /**
@@ -64,29 +64,51 @@ object Shell {
   def apply(lineParser: LineParser,
             outputProvider: OutputProvider,
             commands: Command*): Shell = {
-    Impl(ShellCore(commands: _*), lineParser, outputProvider)
+    Impl(ShellCore(commands: _*), lineParser, outputProvider, Nil)
   }
 
-  private abstract class Base(core: ShellCore, outputProvider: OutputProvider) extends Shell {
-    implicit protected def sink: OutputSink = outputProvider
+  /**
+    * Creates a shell with [[LinePreProcessor line pre-processors]].
+    *
+    * @param lineParser     the [[LineParser]] to use for the shell
+    * @param outputProvider the [[OutputProvider]] for the shell
+    * @param preProcessors  [[LinePreProcessor]]s to use before
+    *                       tab-completing or executing lines
+    * @param commands       the commands for the shell to execute
+    * @return a shell created with the given parameters
+    */
+  def apply(lineParser: LineParser,
+            outputProvider: OutputProvider,
+            preProcessors: ImmutableSeq[LinePreProcessor],
+            commands: ImmutableSeq[Command]): Shell = {
+    Impl(ShellCore(commands), lineParser, outputProvider, preProcessors)
+  }
 
-    override def commands: ImmutableIterable[Command] = core.commands
+  /**
+    * Creates a shell with [[LinePreProcessor line pre-processors]].
+    *
+    * @param lineParser     the [[LineParser]] to use for the shell
+    * @param outputProvider the [[OutputProvider]] for the shell
+    * @param preProcessors  [[LinePreProcessor]]s to use before
+    *                       tab-completing or executing lines
+    * @param commands       the commands for the shell to execute
+    * @return a shell created with the given parameters
+    */
+  def apply(lineParser: LineParser,
+            outputProvider: OutputProvider,
+            preProcessors: ImmutableSeq[LinePreProcessor],
+            commands: Command*): Shell = {
+    Impl(ShellCore(commands: _*), lineParser, outputProvider, preProcessors)
   }
 
   private case class Impl(core: ShellCore,
                           lineParser: LineParser,
-                          outputProvider: OutputProvider) extends Base(core, outputProvider) {
-    override def tabComplete(line: String): ImmutableSeq[String] = {
-      core.tabComplete(lineParser.parseLineForTabCompletion(line))
-    }
+                          outputProvider: OutputProvider,
+                          preProcessors: ImmutableSeq[LinePreProcessor]) extends Shell {
+    implicit private def sink: OutputSink = outputProvider
 
-    override def executeLine(line: String): Unit = core.execute(lineParser.parseLineForExecution(line))
-  }
+    override def commands: ImmutableIterable[Command] = core.commands
 
-  private case class PreProcessImpl(core: ShellCore,
-                                    lineParser: LineParser,
-                                    outputProvider: OutputProvider,
-                                    preProcessors: ImmutableSeq[LinePreProcessor]) extends Base(core, outputProvider) {
     private def preProcessLine(line: ImmutableSeq[String]): ImmutableSeq[String] = {
       preProcessors.foldLeft(line) { (seq, p) => p(seq, lineParser.parseLineForExecution) }
     }
