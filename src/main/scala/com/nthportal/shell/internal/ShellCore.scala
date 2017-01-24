@@ -4,6 +4,7 @@ package internal
 import java.util.Objects
 
 import com.google.common.base.CharMatcher
+import com.nthportal.shell.internal.util.DuplicateChecker
 import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
 
 /**
@@ -80,12 +81,7 @@ private[shell] object ShellCore {
     require(names.forall(CharMatcher.whitespace().matchesNoneOf), "Commands cannot contain whitespace")
 
     // Check for duplicated command names
-    val duplicates = names
-      .groupBy(identity)
-      .mapValues(_.size)
-      .filter(_._2 > 1)
-      .keys
-    require(duplicates.isEmpty, s"Duplicated command name(s): ${duplicates.mkString(", ")}")
+    DuplicateChecker.check(names, "command name")
   }
 
   private[internal] val helpCommandName = "help"
