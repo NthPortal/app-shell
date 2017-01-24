@@ -1,6 +1,8 @@
 package com.nthportal.shell
 package extensions.alias
 
+import com.nthportal.shell.internal.util.DuplicateChecker
+
 import scala.annotation.tailrec
 
 /**
@@ -44,7 +46,7 @@ object AliasProcessor {
     */
   def apply(aliases: ImmutableSeq[Alias]): AliasProcessor = {
     val aliasMap = aliases.map(a => (a.name, a)).toMap
-    validateAliases(aliasMap)
+    DuplicateChecker.check(aliasMap.keys, "alias name")
     new AliasProcessor(aliasMap)
   }
 
@@ -55,13 +57,4 @@ object AliasProcessor {
     * @return an AliasProcessor with the specified aliases
     */
   def apply(aliases: Alias*): AliasProcessor = apply(aliases.to[ImmutableSeq])
-
-  private def validateAliases(aliases: Map[String, Alias]): Unit = {
-    val duplicates = aliases.keys
-      .groupBy(identity)
-      .mapValues(_.size)
-      .filter(_._2 > 1)
-      .keys
-    require(duplicates.isEmpty, s"Duplicated alias name(s): ${duplicates.mkString(", ")}")
-  }
 }
