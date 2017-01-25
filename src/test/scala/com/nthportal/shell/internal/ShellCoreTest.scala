@@ -7,26 +7,26 @@ class ShellCoreTest extends SimpleSpec {
   behavior of classOf[ShellCore].getSimpleName
 
   it should "validate commands properly" in {
-    an[IllegalArgumentException] should be thrownBy {ShellCore(TestCommand(ShellCore.helpCommandName))}
+    an[IllegalArgumentException] should be thrownBy {ShellCore(List(TestCommand(ShellCore.helpCommandName)))}
 
-    an[IllegalArgumentException] should be thrownBy {ShellCore(TestCommand("contains whitespace"))}
+    an[IllegalArgumentException] should be thrownBy {ShellCore(List(TestCommand("contains whitespace")))}
 
-    an[IllegalArgumentException] should be thrownBy {ShellCore(TestCommand("contains\twhitespace"))}
+    an[IllegalArgumentException] should be thrownBy {ShellCore(List(TestCommand("contains\twhitespace")))}
 
-    an[IllegalArgumentException] should be thrownBy {ShellCore(TestCommand(), TestCommand())}
+    an[IllegalArgumentException] should be thrownBy {ShellCore(List(TestCommand(), TestCommand()))}
 
-    a[NullPointerException] should be thrownBy {ShellCore(null: Command)}
+    a[NullPointerException] should be thrownBy {ShellCore(List(null: Command))}
   }
 
   it should "not write to the OutputSink when executing an empty argument list" in {
     val os = StatefulOutputProvider()
-    val core = ShellCore(TestCommand())
+    val core = ShellCore(List(TestCommand()))
     core.execute(Nil)(os)
     os.writtenTo should be(false)
   }
 
   it should "write to the OutputSink when executing a nonexistent command" in {
-    val core = ShellCore(TestCommand())
+    val core = ShellCore(List(TestCommand()))
 
     val os1 = StatefulOutputProvider()
     core.execute(List(""))(os1)
@@ -39,8 +39,8 @@ class ShellCoreTest extends SimpleSpec {
 
   it should "check equality properly" in {
     val t = TestCommand()
-    val core = ShellCore(t)
-    core shouldEqual ShellCore(t)
+    val core = ShellCore(List(t))
+    core shouldEqual ShellCore(List(t))
     core should not equal "something which isn't a ShellCore"
   }
 }
