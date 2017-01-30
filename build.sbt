@@ -7,6 +7,9 @@ isSnapshot := false
 version := rawVersion + {if (isSnapshot.value) "-SNAPSHOT" else ""}
 
 scalaVersion := "2.12.1"
+crossScalaVersions := Seq(
+  "2.12.1"
+)
 
 locally {jacoco.settings}
 
