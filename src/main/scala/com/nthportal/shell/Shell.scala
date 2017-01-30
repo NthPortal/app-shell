@@ -64,7 +64,7 @@ object Shell {
   def apply(lineParser: LineParser,
             outputProvider: OutputProvider,
             commands: Command*): Shell = {
-    Impl(ShellCore(commands: _*), lineParser, outputProvider, Nil)
+    apply(lineParser, outputProvider, commands.to[ImmutableSeq])
   }
 
   /**
@@ -98,7 +98,7 @@ object Shell {
             outputProvider: OutputProvider,
             preProcessors: ImmutableSeq[LinePreProcessor],
             commands: Command*): Shell = {
-    Impl(ShellCore(commands: _*), lineParser, outputProvider, preProcessors)
+    apply(lineParser, outputProvider, preProcessors, commands.to[ImmutableSeq])
   }
 
   private case class Impl(core: ShellCore,
