@@ -21,9 +21,9 @@ class AsyncShellTest extends SimpleSpec {
     ic.sendAction(tc)
     val terminated = shell.terminate()
     Await.ready(terminated, Duration.Inf)
+    shell.status.isCompleted should be (true)
 
     tc.future.isCompleted should be(true)
-    shell.status.isCompleted should be (true)
   }
 
   it should "only allow termination once" in {
