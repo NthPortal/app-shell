@@ -15,6 +15,7 @@ class AsyncShellTest extends SimpleSpec {
   it should "execute inputs properly" in {
     val ic = SimpleInputChannel()
     val shell = AsyncShell(ic, Shell(WhitespaceDelineatingParser, NoOpOutputProvider))
+    shell.status.isCompleted should be (false)
 
     val tc = InputAction.tabCompletion("")
     ic.sendAction(tc)
@@ -22,6 +23,7 @@ class AsyncShellTest extends SimpleSpec {
     Await.ready(terminated, Duration.Inf)
 
     tc.future.isCompleted should be(true)
+    shell.status.isCompleted should be (true)
   }
 
   it should "only allow termination once" in {
