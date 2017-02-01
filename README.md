@@ -9,7 +9,7 @@ A framework for creating shells/CLIs for an application
 
 ### SBT
 ```
-"com.nthportal" %% "app-shell" % "1.1.0"
+"com.nthportal" %% "app-shell" % "1.2.0"
 ```
 
 ### Maven
@@ -17,6 +17,6 @@ A framework for creating shells/CLIs for an application
 <dependency>
   <groupId>com.nthportal</groupId>
   <artifactId>app-shell_2.12</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 </dependency>
 ```

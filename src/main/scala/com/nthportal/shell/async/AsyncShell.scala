@@ -32,17 +32,27 @@ final class AsyncShell private(inputProvider: InputProvider)(implicit shell: She
   }
 
   /**
+    * Returns a [[Future]] which represents the status of this asynchronous shell.
+    *
+    * The Future will succeed (with `Unit`) when this shell is terminated normally.
+    * If this shell throws an exception, the Future will fail with that exception.
+    *
+    * @return a Future representing the status of this asynchronous shell
+    */
+  def status: Future[Unit] = termination.future
+
+  /**
     * Terminates this asynchronous shell so that it will no longer process inputs.
     * It cannot be terminated more than once.
     *
     * Note: Invoking this method does NOT interrupt an action which is already
     * being processed.
     *
-    * @return a Future which will be completed once the shell is fully terminated
+    * @return [[status]], which will be completed once the shell is fully terminated
     */
   def terminate(): Future[Unit] = {
     if (!cip.tryCancel()) throw new IllegalStateException("Shell already terminated")
-    termination.future
+    status
   }
 }
 

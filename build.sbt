@@ -2,7 +2,7 @@ organization := "com.nthportal"
 name := "app-shell"
 description := "A framework for creating shells/CLIs for an application."
 
-val rawVersion = "1.1.0"
+val rawVersion = "1.2.0"
 isSnapshot := false
 version := rawVersion + {if (isSnapshot.value) "-SNAPSHOT" else ""}
 
@@ -14,10 +14,10 @@ crossScalaVersions := Seq(
 locally {jacoco.settings}
 
 libraryDependencies ++= Seq(
-  "com.google.guava" % "guava" % "20.0",
-  "org.scala-lang.modules" %% "scala-java8-compat" % "0.8.0",
-  "com.nthportal" %% "future-queue" % "1.0.0",
-  "org.scalatest" %% "scalatest" % "3.0.1" % Test
+  "com.google.guava" % "guava" % "21.+",
+  "org.scala-lang.modules" %% "scala-java8-compat" % "0.8.+",
+  "com.nthportal" %% "future-queue" % "1.+",
+  "org.scalatest" %% "scalatest" % "3.0.+" % Test
 )
 
 publishTo := {
