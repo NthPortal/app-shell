@@ -18,6 +18,7 @@ class AsyncShellTest extends SimpleSpec {
     val ic = new SimpleInputChannel
     val shell = AsyncShell.create(ic, JShell.create(TestParser, NoOpOutputProvider, Collections.emptyList[Command]()))
 
+    shell.status0().isCompleted should be (false)
     val tc = shell.tabCompletion("")
     ic.sendAction(tc)
     val noOp = shell.inputAction(_ => Unit)
@@ -27,6 +28,7 @@ class AsyncShellTest extends SimpleSpec {
 
     val terminated = shell.terminate()
     terminated.toCompletableFuture.get()
+    shell.status0().isCompleted should be (true)
 
     tc.future.isCompleted should be(true)
   }

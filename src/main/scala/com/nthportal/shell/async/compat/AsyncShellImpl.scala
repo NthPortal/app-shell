@@ -13,7 +13,12 @@ private[compat] class AsyncShellImpl(inputProvider: InputProvider, shell: JShell
   implicit private val ec = SAsyncShell.defaultContext
   private val asyncShell = SAsyncShell(SCompatInputProvider(inputProvider))(shell.underlying, ec)
 
-  override def terminate0(): Future[Void] = asyncShell.terminate().map(_ => null)
+  override val status0: Future[Void] = asyncShell.status map { _ => null }
+
+  override def terminate0(): Future[Void] = {
+    asyncShell.terminate()
+    status0
+  }
 
   override def inputAction[T](action: Function[JShell, T]): InputAction[T] = new InputAction[T](action(_))
 }
