@@ -14,9 +14,10 @@ crossScalaVersions := Seq(
 locally {jacoco.settings}
 
 libraryDependencies ++= Seq(
-  "com.google.guava" % "guava" % "21.+",
   "org.scala-lang.modules" %% "scala-java8-compat" % "0.8.+",
+  "com.nthportal" %% "extra-predef" % "1.+",
   "com.nthportal" %% "future-queue" % "1.+",
+  "com.google.guava" % "guava" % "21.+",
   "org.scalatest" %% "scalatest" % "3.0.+" % Test
 )
 
