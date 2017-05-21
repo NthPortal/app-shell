@@ -4,12 +4,14 @@ A framework for creating shells/CLIs for an application
 [![Build Status](https://travis-ci.org/NthPortal/app-shell.svg?branch=master)](https://travis-ci.org/NthPortal/app-shell)
 [![Coverage Status](https://coveralls.io/repos/github/NthPortal/app-shell/badge.svg?branch=master)](https://coveralls.io/github/NthPortal/app-shell?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/com.nthportal/app-shell_2.12.svg)](https://mvnrepository.com/artifact/com.nthportal/app-shell_2.12)
+[![Versioning](https://img.shields.io/badge/versioning-semver%202.0.0-blue.svg)](http://semver.org/spec/v2.0.0.html)
+[![Docs](https://www.javadoc.io/badge/com.nthportal/app-shell_2.12.svg?color=blue&label=docs)](https://www.javadoc.io/doc/com.nthportal/app-shell_2.12)
 
 ## Add as a Dependency
 
 ### SBT
 ```
-"com.nthportal" %% "app-shell" % "1.1.0"
+"com.nthportal" %% "app-shell" % "1.2.0"
 ```
 
 ### Maven
@@ -17,6 +19,6 @@ A framework for creating shells/CLIs for an application
 <dependency>
   <groupId>com.nthportal</groupId>
   <artifactId>app-shell_2.12</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 </dependency>
 ```

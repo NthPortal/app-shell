@@ -1,4 +1,5 @@
-package com.nthportal.shell
+package com.nthportal
+package shell
 package async
 
 import java.util.concurrent.Executors
@@ -34,8 +35,7 @@ final class AsyncShell private(inputProvider: InputProvider)(implicit shell: She
   /**
     * Returns a [[Future]] which represents the status of this asynchronous shell.
     *
-    * The Future will succeed (with `Unit`) when this shell is terminated normally.
-    * If this shell throws an exception, the Future will fail with that exception.
+    * The Future will succeed (with `Unit`) when this shell is terminated.
     *
     * @return a Future representing the status of this asynchronous shell
     */
@@ -51,7 +51,7 @@ final class AsyncShell private(inputProvider: InputProvider)(implicit shell: She
     * @return [[status]], which will be completed once the shell is fully terminated
     */
   def terminate(): Future[Unit] = {
-    if (!cip.tryCancel()) throw new IllegalStateException("Shell already terminated")
+    requireState(cip.tryCancel(), "Shell already terminated")
     status
   }
 }
@@ -104,7 +104,7 @@ object AsyncShell {
       val (cancelled, old) = tuple.getAndUpdate({ case (c, _) => (c, p) })
 
       // Assertion about state. Ideally, this condition should never evaluate to `true`.
-      if (!old.isCompleted) throw new IllegalStateException("Previous action is not completed")
+      requireState(old.isCompleted, "Previous action is not completed")
 
       if (!cancelled) {
         p.tryCompleteWith(inputProvider.nextAction)
