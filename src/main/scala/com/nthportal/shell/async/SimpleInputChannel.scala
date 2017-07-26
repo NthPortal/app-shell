@@ -15,7 +15,7 @@ final class SimpleInputChannel extends InputChannel {
     action.future
   }
 
-  override def nextAction: Future[InputAction[_]] = queue.dequeue
+  override def nextAction: Future[InputAction[_]] = queue.dequeue()
 }
 
 object SimpleInputChannel {
