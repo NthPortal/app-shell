@@ -26,7 +26,7 @@ trait SubCommand extends Executable with TabCompletable {
     */
   def help(args: ImmutableSeq[String]): Option[String] = None
 
-  def tabComplete(args: ImmutableSeq[String]): ImmutableSeq[String] = Nil
+  override def tabComplete(args: ImmutableSeq[String]): ImmutableSeq[String] = Nil
 
   /**
     * Executes this sub-command with the given arguments.
