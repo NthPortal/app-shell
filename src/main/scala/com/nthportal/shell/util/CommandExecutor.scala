@@ -29,9 +29,6 @@ trait CommandExecutor extends CommandDelegator with Executable {
   protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String])
                                       (implicit sink: OutputSink): Unit
 
-  /**
-    * @inheritdoc
-    */
   override final def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = args match {
     case Seq() => noArgExecution
     case name +: subArgs =>

@@ -9,9 +9,6 @@ package util
   * that command with the subsequent arguments.
   */
 trait CommandTabCompleter extends CommandDelegator with TabCompletable {
-  /**
-    * @inheritdoc
-    */
   override final def tabComplete(args: ImmutableSeq[String]): ImmutableSeq[String] = args match {
     case Seq() => Nil
     case Seq(prefix) =>

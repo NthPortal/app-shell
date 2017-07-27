@@ -11,29 +11,14 @@ import com.nthportal.shell.util.CommandTabCompleter
 private[internal] case class HelpCommand(shellCommands: ImmutableSeq[Command]) extends Command
                                                                                        with CommandTabCompleter {
   // This field must be declared before `commands` is sorted (during initialization)
-  /**
-    * @inheritdoc
-    */
   override val name: String = ShellCore.helpCommandName
 
-  /**
-    * @inheritdoc
-    */
   override protected final val commands = (this +: shellCommands).sortBy(_.name)
 
-  /**
-    * @inheritdoc
-    */
   override def execute(args: ImmutableSeq[String])(implicit sink: OutputSink): Unit = sink.writeln(getHelp(args))
 
-  /**
-    * @inheritdoc
-    */
   override def description: Option[String] = Some("Shows the help information for a command")
 
-  /**
-    * @inheritdoc
-    */
   override def help(args: ImmutableSeq[String]): Option[String] = Some(usage)
 
   override def equals(obj: Any): Boolean = obj match {

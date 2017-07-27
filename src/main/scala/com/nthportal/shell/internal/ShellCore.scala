@@ -14,19 +14,10 @@ import com.nthportal.shell.util.{CommandExecutor, CommandTabCompleter}
   */
 private[shell] class ShellCore private(commandsSeq: ImmutableSeq[Command]) extends CommandTabCompleter
                                                                     with CommandExecutor {
-  /**
-    * @inheritdoc
-    */
   override final val commands: ImmutableIterable[Command] = (HelpCommand(commandsSeq) +: commandsSeq).sortBy(_.name)
 
-  /**
-    * @inheritdoc
-    */
   override protected def noArgExecution(implicit sink: OutputSink): Unit = {}
 
-  /**
-    * @inheritdoc
-    */
   override protected def noSuchCommandExecution(command: String, args: ImmutableSeq[String])
                                                (implicit sink: OutputSink): Unit = {
     sink.writeln(s"Command not found: $command")
