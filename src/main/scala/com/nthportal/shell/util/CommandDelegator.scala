@@ -1,7 +1,6 @@
-package com.nthportal.shell
+package com.nthportal
+package shell
 package util
-
-import scala.collection.immutable.SortedMap
 
 /**
   * Something which delegates some behavior to one of a sequence of
@@ -19,9 +18,5 @@ trait CommandDelegator {
   /**
     * A mapping of each command's name to itself.
     */
-  protected lazy final val commandsByName: Map[String, Command] = {
-    val b = SortedMap.newBuilder[String, Command]
-    b ++= commands.map(c => c.name -> c)
-    b.result()
-  }
+  protected lazy final val commandsByName: Map[String, Command] = commands.map(c => c.name -> c).toSortedMap
 }
